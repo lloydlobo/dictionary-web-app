@@ -1,38 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+📝Brief
 
-## Getting Started
+Your challenge is to build out this dictionary web app using the Dictionary API and get it looking as close to the design as possible.
 
-First, run the development server:
+You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
+https://dictionaryapi.dev/
+Get word definitions
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Usage : The basic syntax of a URL request to the API is shown below:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://api.dictionaryapi.dev/api/v2/entries/en/<word>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+As an example, to get definition of English word hello, you can send request to
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+https://api.dictionaryapi.dev/api/v2/entries/en/hello
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Your users should be able to:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    Search for words using the input field
+    See the Free Dictionary API's response for the searched word
+    See a form validation message when trying to submit a blank form
+    Play the audio file for a word when it's available
+    Switch between serif, sans serif, and monospace fonts
+    Switch between light and dark themes
+    View the optimal layout for the interface depending on their device's screen size
+    See hover and focus states for all interactive elements on the page
+    Bonus: Have the correct color scheme chosen for them based on their computer preferences. Hint: Research prefers-color-scheme in CSS.
 
-## Learn More
+🗃Assets provided
 
-To learn more about Next.js, take a look at the following resources:
+    Sketch and Figma design files
+    Mobile, tablet & desktop layouts
+    Professional design system for colors, fonts, etc.
+    Optimized image assets
+    README file to help you get started
+    HTML file with pre-written content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+💡Ideas to test yourself
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    Write your styles using a pre-processor, such as Sass, Less or Stylus
 
-## Deploy on Vercel
+    Train your eye for detail by getting your solution as close to the design as you can
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Use a JavaScript framework/library to practice templating and/or building using components
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    Try estimating the time it will take for you to build the project. Then see if the time taken matches up to your estimate. Project estimations are a skill that is often overlooked but is important for professional developers
