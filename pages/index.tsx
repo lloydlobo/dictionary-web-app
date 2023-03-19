@@ -42,18 +42,18 @@ export default function Home() {
 
 	const useSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
 		setLoading(true);
-
 		let data = await getDictByKeyword(search);
-		let dictionary: Dictionary = data[0];
+		setLoading(false);
 
+		let dictionary: Dictionary = data[0];
 		if (dictionary !== null) {
 			setResults(dictionary);
 		} else {
 			setResults(null);
 		}
 
-		setLoading(false);
 	}
 
 
@@ -72,18 +72,18 @@ export default function Home() {
 
 			<main className={`px-8 min-h-screen w-full ${ibm.className} font-serif`}>
 				{ /* start: Search input bar */}
-				<section className="mt-8 mb-16">
+				<section className="my-8">
 					<form
 						onSubmit={useSubmit}
 					>
-						<div className="w-full grid gap-6 relative">
+						<div className="w-full grid relative">
 							<input
 								type={"text"}
 								className={`px-2 w-full py-1 prose-sm outline outline-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-700 rounded-lg`}
 								placeholder={"keyboard"}
-								// defaultValue={search}
 								onChange={event => setSearch(event.currentTarget.value)}
 							/>
+
 							<button>
 								<SearchIcon
 									className={`absolute right-3 text-purple-400 top-0.5 scale-[80%]`}
@@ -91,17 +91,19 @@ export default function Home() {
 							</button>
 						</div>
 					</form>
+
 					<sub className="hidden debug">Searching for {search}</sub>
+
 				</section>
 				{ /* end: Search input bar */}
 
 				{ /* start: Results of searched dictionary word */}
-				{results !== null ?
+				{loading === false && results !== null ?
 					<Results results={results} keyword={search} />
 					: (
-						loading ?
+					search.length > 0 &&loading ?
 							<SkeletonLayout />
-							: null
+							: <div>&nbsp;</div>
 					)
 				}
 				{ /* start: Results of searched dictionary word */}
@@ -133,7 +135,11 @@ function PlayIcon() {
 export const Results = (props: { results: Dictionary | null, keyword: string }) => {
 	let dict = props.results;
 	if (dict === null || typeof dict === 'undefined') {
-		return <>{props.keyword} not found</>;
+		return <section className="">
+			<p className="dark:text-red-300 tracking-wide">
+				<em className="hidden">{props.keyword}</em> Not Found!
+			</p>
+		</section>;
 	} else {
 		return (
 			<div className="space-y-12">
