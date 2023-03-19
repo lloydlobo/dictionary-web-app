@@ -151,7 +151,7 @@ export const Results = (props: { results: Dictionary | null }) => {
 										<ul className="list-none flex prose-sm">
 											{meaning.synonyms.map((synonym, idx) => (
 												<li key={`synonym-${synonym}-${idx}`}>
-													<a href={`https://google.com/q?=${synonym}`}>{synonym}</a>
+													<a href={`https://google.com/search?q=${synonym}`}>{synonym}</a>
 												</li>
 											))}
 										</ul>
@@ -163,7 +163,7 @@ export const Results = (props: { results: Dictionary | null }) => {
 										<ul className="list-none flex prose-sm">
 											{meaning.antonyms.map((antonym, idx) => (
 												<li key={`synonym-${antonym}-${idx}`}>
-													<a href={`https://google.com/q?=${antonym}`}>{antonym}</a>
+													<a href={`https://google.com/search?q=${antonym}`}>{antonym}</a>
 												</li>
 											))}
 										</ul>
@@ -180,7 +180,7 @@ export const Results = (props: { results: Dictionary | null }) => {
 						<h2 className="prose-sm text-base">Source</h2>
 						{dict.sourceUrls.map((x, index) => (
 							<div key={`meaning-${x}-${index}`}>
-								<a href="#">{x}</a>
+								<a href={x}>{x}</a>
 							</div>
 						))}
 					</div>
