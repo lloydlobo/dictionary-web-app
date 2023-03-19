@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-query'
 
 import { Dictionary } from "@/utils/sample-dict"
+import { SkeletonLayout } from "@/components/skeleton";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -35,19 +36,24 @@ async function getDictByKeyword(keyword: string) {
 }
 
 export default function Home() {
-	const [search, setSearch] = useState("keyboard");
+	const [search, setSearch] = useState("");
 	const [results, setResults] = useState<Dictionary | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	const useSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setLoading(true);
+
 		let data = await getDictByKeyword(search);
 		let dictionary: Dictionary = data[0];
-		console.dir(dictionary);
+
 		if (dictionary !== null) {
 			setResults(dictionary);
 		} else {
-			throw setResults(null);
+			setResults(null);
 		}
+
+		setLoading(false);
 	}
 
 
@@ -75,7 +81,7 @@ export default function Home() {
 								type={"text"}
 								className={`px-2 w-full py-1 prose-sm outline outline-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-700 rounded-lg`}
 								placeholder={"keyboard"}
-								defaultValue={search}
+								// defaultValue={search}
 								onChange={event => setSearch(event.currentTarget.value)}
 							/>
 							<button>
@@ -85,12 +91,19 @@ export default function Home() {
 							</button>
 						</div>
 					</form>
-					<sub>Searching for {search}</sub>
+					<sub className="hidden debug">Searching for {search}</sub>
 				</section>
 				{ /* end: Search input bar */}
 
 				{ /* start: Results of searched dictionary word */}
-				<Results results={results} />
+				{results !== null ?
+					<Results results={results} keyword={search} />
+					: (
+						loading ?
+							<SkeletonLayout />
+							: null
+					)
+				}
 				{ /* start: Results of searched dictionary word */}
 			</main>
 		</>
@@ -117,21 +130,18 @@ function PlayIcon() {
 	)
 }
 
-export const Results = (props: { results: Dictionary | null }) => {
+export const Results = (props: { results: Dictionary | null, keyword: string }) => {
 	let dict = props.results;
-	if (dict === null) {
-		return <>Not found</>;
+	if (dict === null || typeof dict === 'undefined') {
+		return <>{props.keyword} not found</>;
 	} else {
-		console.log(dict);
 		return (
 			<div className="space-y-12">
 				<section className="">
 					<div className="flex justify-between">
 						<div className="grid">
 							<h1 className="mb-2 pb-2">
-								{dict ? <span>{dict.word}</span> :
-									<span>keyboard</span>
-								}
+								{dict ? <span>{dict.word}</span> : null}
 							</h1>
 							<div className="prose-sm dark:text-violet-400">
 								{dict ?
