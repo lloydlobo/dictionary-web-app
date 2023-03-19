@@ -20,20 +20,139 @@ import { Dictionary } from "@/utils/sample-dict"
 const inter = Inter({ subsets: ["latin"] });
 const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
 const URL = ' https://api.dictionaryapi.dev/api/v2/entries/en';
+
+const myLoader = ({ src, width, quality }) => {
+	return `${src}?w=${width}&q=${quality || 75}`;
+}
+
 const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id)
+
 async function getDictByKeyword(keyword: string) {
 	let url = `${URL}/${keyword}`;
 	const res = await fetch(url);
 	return await res.json();
 }
-const myLoader = ({ src, width, quality }) => {
-	return `${src}`;
-	// return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+
+// Object { word: "hello", phonetics: (3) […], meanings: (3) […], license: {…}, sourceUrls: (1) […] }
+// license: Object { name: "CC BY-SA 3.0", url: "https://creativecommons.org/licenses/by-sa/3.0" }
+// meanings: Array(3) [ {…}, {…}, {…} ]
+// phonetics: Array(3) [ {…}, {…}, {…} ]
+// sourceUrls: Array [ "https://en.wiktionary.org/wiki/hello" ]
+// word: "hello"
+
+// <>
+// 	{dict.license.url}
+// 	{dict.license.name}
+// </>
+
+export const Results = (props: { results: Dictionary | null }) => {
+	let dict = props.results;
+	if (dict === null) {
+		return <>Not found</>;
+	} else {
+		console.log(dict);
+		return (
+			<div>
+				<>
+					<div className="space-y-2">
+						{dict.word}
+					</div>
+
+					<div className="space-y-2">
+						{dict.sourceUrls.map((x, index) => (
+							<div key={`meaning-${x}-${index}`}>
+								<>
+									{x}
+								</>
+							</div>
+						))}
+					</div>
+					<div className="space-y-2">
+						{dict.phonetics.map((x, index) => (
+							<div key={`phonetic-${x}-${index}`}>
+								<div key={`phonetic-text-${x}-${index}`}>
+									{x.text}
+								</div>
+								<div key={`audio-text-${x}-${index}`}>
+									<>
+										{x.audio}
+									</>
+								</div>
+								<div key={`sourceUrl-text-${x}-${index}`}>
+									<>
+										{x.sourceUrl}
+									</>
+								</div>
+							</div>
+						))}
+					</div>
+
+					<div className="space-y-2">
+						{dict.meanings.map((x, index) => (
+							<div key={`meaning-${x}-${index}`}>
+
+								<div key={`meaning-antonym-${x}-${index}`}>
+									<div>
+										{x.antonyms.map((y, idx) => (
+											<div key={`antonym-${y}-${idx}`}>
+												{y}
+											</div>
+										))}
+									</div>
+								</div>
+								<div key={`meaning-synonym-${x}-${index}`}>
+									<div>
+										{x.synonyms.map((y, idx) => (
+											<div key={`synonym-${y}-${idx}`}>
+												{y}
+											</div>
+										))}
+									</div>
+								</div>
+								<div key={`meaning-definitions-${x}-${index}`}>
+									<div>
+										{x.definitions.map((y, idx) => (
+											<div key={`definitions-${y}-${idx}`}>
+												{y.definition}
+												<div>
+													{y.synonyms.map((z, idx) => (
+														<div key={`synonym-definition-${y}-${idx}`}>
+															{z}
+														</div>
+													))}
+												</div>
+												<div>
+													{y.antonyms.map((z, idx) => (
+														<div key={`antonyms-definition-${y}-${idx}`}>
+															{z}
+														</div>
+													))}
+												</div>
+												<div>
+													{y.example}
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+								<div key={`meaning-partOfSpeech-${x}-${index}`}>
+									<div>
+										{x.partOfSpeech}
+									</div>
+								</div>
+							</div>
+						))}
+					</div>
+				</>
+			</div>
+		)
+	}
 }
 
 export default function Home() {
 	const [search, setSearch] = useState("keyboard");
 	const [results, setResults] = useState<Dictionary | null>(null);
+
 	const useSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		let data = await getDictByKeyword(search);
@@ -77,7 +196,14 @@ export default function Home() {
 					<sub>Searching for {search}</sub>
 				</section>
 
-				<section>
+				<>
+					<div>
+						{results ? <span>{results.word}</span> : <span></span>}
+					</div>
+					<Results results={results} />
+				</>
+
+				<section className="hidden">
 					<div className="w-full items-start flex flex-nowrap">
 						<div className="flex-1 flex flex-col">
 							<h1 className="mb-2 pb-2">
@@ -225,12 +351,12 @@ export function Navbar() {
 							<div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 								<div className="flex flex-shrink-0 items-center">
 									<Image
-										width={32}
 										// placeholder="blur"
 										loader={myLoader}
+										width={32}
 										height={32}
 										className="block h-8 w-auto lg:hidden"
-										src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+										src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=200"
 										alt="Your Company"
 									/>
 									<Image
@@ -369,6 +495,7 @@ export function Navbar() {
 		</Disclosure>
 	);
 }
+
 
 
 // const useSearch = ({ keyword }: { keyword: string }) => {
