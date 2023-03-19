@@ -245,11 +245,11 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
                   <div key={`meaning-antonym-${meaning}-${index}`} className="flex items-baseline">
                     <h3 key={`heading-antonym-${meaning}`} className="prose-sm  brightness-50">Antonyms</h3>
 
-                    <ul className="list-none flex items-center prose-sm">
+                    <ul className="list-none gap-2 flex-wrap items-center flex prose-sm">
                       {meaning.antonyms.map((antonym, idx) => (
-                        <li key={`${idx}-synonym-${antonym}-${idx}`}>
+                        <div key={`${idx}-synonym-${antonym}-${idx}`}>
                           <a href={`https://google.com/search?q=${antonym}`}>{antonym}</a>
-                        </li>
+                        </div>
                       ))}
                     </ul>
                   </div>
