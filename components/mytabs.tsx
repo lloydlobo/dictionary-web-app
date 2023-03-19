@@ -1,7 +1,7 @@
 import { Results } from "@/pages";
 import { Dictionary } from "@/utils/sample-dict";
 import { Tab } from "@headlessui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -81,8 +81,15 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
   } else {
     return (
       <section>
-        {props.results ? <span>{props.results.word} </span> : <>Oops</>}
-        <div className="space-y-12 text-xs overflow-x-scroll container">
+        <div className="flex items-center justify-between">
+          <div>
+            {props.results ? <span>{props.results.word} </span> : <>Oops</>}
+          </div>
+          <div className="">
+            <CopyToClipboard data={JSON.stringify(props.results, null, 2)} />
+          </div>
+        </div>
+        <div className="space-y-12 w-[83vw] md:w-auto relative text-xs overflow-x-scroll container">
           <pre>{JSON.stringify(props.results, null, 2)}</pre>
         </div>
       </section>
@@ -90,98 +97,61 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
   }
 }
 
-export const DATA = [
-  {
-    word: "hello",
-    phonetics: [
-      {
-        audio:
-          "https://api.dictionaryapi.dev/media/pronunciations/en/hello-au.mp3",
-        sourceUrl: "https://commons.wikimedia.org/w/index.php?curid=75797336",
-        license: {
-          name: "BY-SA 4.0",
-          url: "https://creativecommons.org/licenses/by-sa/4.0",
-        },
-      },
-      {
-        text: "/həˈləʊ/",
-        audio:
-          "https://api.dictionaryapi.dev/media/pronunciations/en/hello-uk.mp3",
-        sourceUrl: "https://commons.wikimedia.org/w/index.php?curid=9021983",
-        license: {
-          name: "BY 3.0 US",
-          url: "https://creativecommons.org/licenses/by/3.0/us",
-        },
-      },
-      { text: "/həˈloʊ/", audio: "" },
-    ],
-    meanings: [
-      {
-        partOfSpeech: "noun",
-        definitions: [
-          {
-            definition: '"Hello!" or an equivalent greeting.',
-            synonyms: [],
-            antonyms: [],
-          },
-        ],
-        synonyms: ["greeting"],
-        antonyms: [],
-      },
-      {
-        partOfSpeech: "verb",
-        definitions: [
-          { definition: 'To greet with "hello".', synonyms: [], antonyms: [] },
-        ],
-        synonyms: [],
-        antonyms: [],
-      },
-      {
-        partOfSpeech: "interjection",
-        definitions: [
-          {
-            definition:
-              "A greeting (salutation) said when meeting someone or acknowledging someone’s arrival or presence.",
-            synonyms: [],
-            antonyms: [],
-            example: "Hello, everyone.",
-          },
-          {
-            definition: "A greeting used when answering the telephone.",
-            synonyms: [],
-            antonyms: [],
-            example: "Hello? How may I help you?",
-          },
-          {
-            definition:
-              "A call for response if it is not clear if anyone is present or listening, or if a telephone conversation may have been disconnected.",
-            synonyms: [],
-            antonyms: [],
-            example: "Hello? Is anyone there?",
-          },
-          {
-            definition:
-              "Used sarcastically to imply that the person addressed or referred to has done something the speaker or writer considers to be foolish.",
-            synonyms: [],
-            antonyms: [],
-            example:
-              "You just tried to start your car with your cell phone. Hello?",
-          },
-          {
-            definition: "An expression of puzzlement or discovery.",
-            synonyms: [],
-            antonyms: [],
-            example: "Hello! What’s going on here?",
-          },
-        ],
-        synonyms: [],
-        antonyms: ["bye", "goodbye"],
-      },
-    ],
-    license: {
-      name: "CC BY-SA 3.0",
-      url: "https://creativecommons.org/licenses/by-sa/3.0",
-    },
-    sourceUrls: ["https://en.wiktionary.org/wiki/hello"],
-  },
-];
+export const CopyToClipboard = (props: { data: string }) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const contentToCopy = props.data;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(contentToCopy);
+    setIsCopied(true);
+
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1500);
+  };
+
+  return (
+    <div>
+      <div>
+        <button
+          className="prose-sm flex flex-row-reverse items-center gap-0.5 text-end "
+          onClick={copyToClipboard}
+        >
+          {isCopied ? (
+            <span className="text-purple-400 dark:text-primary">
+              Copied
+            </span>
+          ) : (
+            <span className="font-bold tracking-wider decoration-green-400 underline-offset-8 dark:decoration-accent">
+              Copy{" "}
+            </span>
+          )}
+          <div className="scale-75">
+            <CopyIcon />
+          </div>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+function CopyIcon() {
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z"
+        />
+      </svg>
+    </>
+  );
+}
