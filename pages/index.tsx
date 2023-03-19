@@ -101,7 +101,7 @@ export default function Home() {
 				{loading === false && results !== null ?
 					<Results results={results} keyword={search} />
 					: (
-					search.length > 0 &&loading ?
+						search.length > 0 && loading ?
 							<SkeletonLayout />
 							: <div>&nbsp;</div>
 					)
@@ -215,8 +215,7 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 
 										<div key={`meaning-synonym-${meaning}-${index}`} className="flex items-baseline">
 											<h3 className="prose-sm  opacity-50">Synonyms</h3>
-
-											<ul className="list-none flex prose-sm">
+											<ul className="list-none items-center flex prose-sm">
 												{meaning.synonyms.map((synonym, idx) => (
 													<li key={`synonym-${synonym}-${idx}`}>
 														<a href={`https://google.com/search?q=${synonym}`}>{synonym}</a>
@@ -228,7 +227,7 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 										<div key={`meaning-antonym-${meaning}-${index}`} className="flex items-baseline">
 											<h3 className="prose-sm  brightness-50">Antonyms</h3>
 
-											<ul className="list-none flex prose-sm">
+											<ul className="list-none flex items-center prose-sm">
 												{meaning.antonyms.map((antonym, idx) => (
 													<li key={`synonym-${antonym}-${idx}`}>
 														<a href={`https://google.com/search?q=${antonym}`}>{antonym}</a>
@@ -244,13 +243,24 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 				</section>
 
 				<section className="mb-24">
-					<div className="flex items-baseline gap-x-4">
-						<h2 className="prose-sm text-base">Source</h2>
-						{dict && dict.sourceUrls.map((x, index) => (
-							<div key={`meaning-${x}-${index}`}>
-								<a href={x}>{x}</a>
-							</div>
-						))}
+					<span className="w-full flex-1">
+						<hr className="max-w-[80vw] h-4 min-w-[30vw] w-full"></hr>
+					</span>
+					<div className="flex items-baseline gap-x-2">
+						<h2 className="prose-sm text-sm font-normal dark:opacity-30">Source</h2>
+						<ul className="list-none">
+							{dict && dict.sourceUrls.map((x, index) => (
+								<li className="flex gap-0 items-center prose-a:prose-sm" key={`meaning-${x}-${index}`}>
+									<a className="
+									inline-flex
+									" href={x}>{x}
+										<div className="scale-50">
+											<LinkIcon />
+										</div>
+									</a>
+								</li>
+							))}
+						</ul>
 					</div>
 				</section>
 
@@ -453,24 +463,13 @@ export function Navbar() {
 }
 
 
+const LinkIcon = () => {
+	return (
+		<>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+				<path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+			</svg>
 
-// const useSearch = ({ keyword }: { keyword: string }) => {
-// 	// const queryClient = useQueryClient();
-// 	const query = useQuery({ queryKey: ["dictionary"], queryFn: () => fetcher(keyword) });
-// 	// console.log(query.data);
-// 	return query;
-// }
-// // (async () => await getDictionary("hello"))()
-// const queryClient = useQueryClient();
-// // const query = useQuery({ queryKey: ["dictionary"], queryFn: () => fetcher(search) });
-// // let data = (query.data)[0];
-// // console.log(data);
-// export getServerSideProps(){}
-//
-
-// const useSubmit = (event: FormEvent<HTMLFormElement>) => {
-// 	event.preventDefault();
-// 	alert(search);
-// 	let data = (useSearch({ keyword: search }));
-// 	console.log(data)
-// }
+		</>
+	)
+}
