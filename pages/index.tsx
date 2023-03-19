@@ -184,11 +184,11 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 										<>
 											<h3 className="prose-sm opacity-50">Meaning</h3>
 
-											<ul>
+											<ul className="">
 												{meaning.definitions.map((y, idx) => (
-													<li key={`definitions-${y}-${idx}`}>
+													<li className="" key={`definitions-${y}-${idx}`}>
 														<>
-															<p>{y.definition}</p>
+															<p className="my-0 py-0">{y.definition}</p>
 
 															<div className="">
 																{y.synonyms.map((z, idx) => (
@@ -204,9 +204,9 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 																))}
 															</div>
 
-															<blockquote className="">
+															<div className="opacity-70">
 																{y.example}
-															</blockquote>
+															</div>
 														</>
 													</li>
 												))}
@@ -215,11 +215,11 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 
 										<div key={`meaning-synonym-${meaning}-${index}`} className="flex items-baseline">
 											<h3 className="prose-sm  opacity-50">Synonyms</h3>
-											<ul className="list-none items-center flex prose-sm">
+											<ul className="list-none gap-2 flex-wrap items-center flex prose-sm">
 												{meaning.synonyms.map((synonym, idx) => (
-													<li key={`synonym-${synonym}-${idx}`}>
+													<div key={`synonym-${synonym}-${idx}`}>
 														<a href={`https://google.com/search?q=${synonym}`}>{synonym}</a>
-													</li>
+													</div>
 												))}
 											</ul>
 										</div>
