@@ -45,6 +45,26 @@ async function getDictByKeyword(keyword: string) {
 // 	{dict.license.name}
 // </>
 
+function PlayIcon() {
+	return (
+		<>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+				className="fill-purple-100 h-full w-12"
+			>
+				<path
+					fillRule="evenodd"
+					d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z"
+					clipRule="evenodd"
+					className="fill-purple-400"
+				/>
+			</svg>
+		</>
+	)
+}
+
 export const Results = (props: { results: Dictionary | null }) => {
 	let dict = props.results;
 	if (dict === null) {
@@ -52,98 +72,120 @@ export const Results = (props: { results: Dictionary | null }) => {
 	} else {
 		console.log(dict);
 		return (
-			<div>
-				<>
-					<div className="space-y-2">
-						{dict.word}
+			<div className="space-y-12">
+				<section className="">
+					<div className="flex justify-between">
+						<div className="grid">
+							<h1 className="mb-2 pb-2">
+								{dict ? <span>{dict.word}</span> :
+									<span>keyboard</span>
+								}
+							</h1>
+							<div className="prose-sm dark:text-violet-400">
+								{dict ?
+									(<div className="inline-flex gap-x-2">
+										{dict.phonetics.map((x, index) =>
+											<a href={x.audio} className="prose-sm dark:text-violet-400 no-underline" key={`phonetics-${index}`}>{x.text}</a>
+										)} </div>
+									) : <span>n.a</span>
+								}
+							</div>
+						</div>
+						<div className="stroke-purple-400">
+							<PlayIcon />
+						</div>
 					</div>
+				</section>
 
-					<div className="space-y-2">
+				<section>
+					<div className="">
+						{!dict ? (<span>...</span>)
+							: (dict.meanings.map((meaning, index) =>
+								<>
+									<div key={`meaning-definitions-${meaning}-${index}`}>
+										<>
+											<div className="flex gap-8 items-center h-8 mt-8 prose-base">
+												<h2 className="w-fit relative prose-lg">{meaning.partOfSpeech}</h2>
+
+												<span className="w-full flex-1">
+													<hr className="max-w-[80vw] h-4 min-w-[30vw] w-full"></hr>
+												</span>
+											</div>
+										</>
+
+										<>
+											<h3 className="prose-sm opacity-50">Meaning</h3>
+
+											<ul>
+												{meaning.definitions.map((y, idx) => (
+													<li key={`definitions-${y}-${idx}`}>
+														<>
+															<p>{y.definition}</p>
+
+															<div className="">
+																{y.synonyms.map((z, idx) => (
+																	<div key={`synonym-definition-${y}-${idx}`}>{z} </div>
+																))}
+															</div>
+
+															<div className="">
+																{y.antonyms.map((z, idx) => (
+																	<div key={`antonyms-definition-${y}-${idx}`}>
+																		{z}
+																	</div>
+																))}
+															</div>
+
+															<blockquote className="">
+																{y.example}
+															</blockquote>
+														</>
+													</li>
+												))}
+											</ul>
+										</>
+
+									<div key={`meaning-synonym-${meaning}-${index}`} className="flex items-baseline">
+										<h3 className="prose-sm  opacity-50">Synonyms</h3>
+
+										<ul className="list-none flex prose-sm">
+											{meaning.synonyms.map((synonym, idx) => (
+												<li key={`synonym-${synonym}-${idx}`}>
+													<a href={`https://google.com/q?=${synonym}`}>{synonym}</a>
+												</li>
+											))}
+										</ul>
+									</div>
+
+									<div key={`meaning-antonym-${meaning}-${index}`} className="flex items-baseline">
+										<h3 className="prose-sm  brightness-50">Antonyms</h3>
+
+										<ul className="list-none flex prose-sm">
+											{meaning.antonyms.map((antonym, idx) => (
+												<li key={`synonym-${antonym}-${idx}`}>
+													<a href={`https://google.com/q?=${antonym}`}>{antonym}</a>
+												</li>
+											))}
+										</ul>
+									</div>
+
+									</div>
+								</>
+							))}
+					</div>
+				</section>
+
+				<section className="mb-24">
+					<div className="flex items-baseline gap-x-4">
+						<h2 className="prose-sm text-base">Source</h2>
 						{dict.sourceUrls.map((x, index) => (
 							<div key={`meaning-${x}-${index}`}>
-								<>
-									{x}
-								</>
+								<a href="#">{x}</a>
 							</div>
 						))}
 					</div>
-					<div className="space-y-2">
-						{dict.phonetics.map((x, index) => (
-							<div key={`phonetic-${x}-${index}`}>
-								<div key={`phonetic-text-${x}-${index}`}>
-									{x.text}
-								</div>
-								<div key={`audio-text-${x}-${index}`}>
-									<>
-										{x.audio}
-									</>
-								</div>
-								<div key={`sourceUrl-text-${x}-${index}`}>
-									<>
-										{x.sourceUrl}
-									</>
-								</div>
-							</div>
-						))}
-					</div>
+				</section>
 
-					<div className="space-y-2">
-						{dict.meanings.map((x, index) => (
-							<div key={`meaning-${x}-${index}`}>
-
-								<div key={`meaning-antonym-${x}-${index}`}>
-									<div>
-										{x.antonyms.map((y, idx) => (
-											<div key={`antonym-${y}-${idx}`}>
-												{y}
-											</div>
-										))}
-									</div>
-								</div>
-								<div key={`meaning-synonym-${x}-${index}`}>
-									<div>
-										{x.synonyms.map((y, idx) => (
-											<div key={`synonym-${y}-${idx}`}>
-												{y}
-											</div>
-										))}
-									</div>
-								</div>
-								<div key={`meaning-definitions-${x}-${index}`}>
-									<div>
-										{x.definitions.map((y, idx) => (
-											<div key={`definitions-${y}-${idx}`}>
-												{y.definition}
-												<div>
-													{y.synonyms.map((z, idx) => (
-														<div key={`synonym-definition-${y}-${idx}`}>
-															{z}
-														</div>
-													))}
-												</div>
-												<div>
-													{y.antonyms.map((z, idx) => (
-														<div key={`antonyms-definition-${y}-${idx}`}>
-															{z}
-														</div>
-													))}
-												</div>
-												<div>
-													{y.example}
-												</div>
-											</div>
-										))}
-									</div>
-								</div>
-								<div key={`meaning-partOfSpeech-${x}-${index}`}>
-									<div>
-										{x.partOfSpeech}
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</>
 			</div>
 		)
 	}
@@ -171,10 +213,13 @@ export default function Home() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
+
 			<header className="grayscale-[49%] container prose prose-lg mx-auto">
 				<Navbar />
 			</header>
+
 			<main className={`px-8 min-h-screen w-full ${ibm.className} font-serif`}>
+				{ /* start: Search input bar */}
 				<section className="mt-8 mb-16">
 					<form
 						onSubmit={useSubmit}
@@ -184,6 +229,7 @@ export default function Home() {
 								type={"text"}
 								className={`px-2 w-full py-1 prose-sm outline outline-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-700 rounded-lg`}
 								placeholder={"keyboard"}
+								defaultValue={search}
 								onChange={event => setSearch(event.currentTarget.value)}
 							/>
 							<button>
@@ -195,110 +241,11 @@ export default function Home() {
 					</form>
 					<sub>Searching for {search}</sub>
 				</section>
+				{ /* end: Search input bar */}
 
-				<>
-					<div>
-						{results ? <span>{results.word}</span> : <span></span>}
-					</div>
-					<Results results={results} />
-				</>
-
-				<section className="hidden">
-					<div className="w-full items-start flex flex-nowrap">
-						<div className="flex-1 flex flex-col">
-							<h1 className="mb-2 pb-2">
-								{results ? <span>{results.word}</span> :
-									<span>keyboard</span>
-								}
-							</h1>
-							<span className="prose-sm dark:text-violet-400">
-								{results ?
-									(<span className="inline-flex gap-1">
-										{results.phonetics.map((x, index) =>
-											<span key={`phonetics-${index}`}>{x.text}</span>
-										)} </span>
-									) : <span>/ki.bo.d/</span>
-								}
-							</span>
-						</div>
-						<div className="stroke-purple-400">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								fill="currentColor"
-								className="fill-purple-100 h-full w-12"
-							>
-								<path
-									fillRule="evenodd"
-									d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z"
-									clipRule="evenodd"
-									className="fill-purple-400"
-								/>
-							</svg>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<div className="flex gap-8 items-center h-8 mt-8 prose-base">
-						<h2 className="w-fit relative prose-lg">noun</h2>
-						<span className="w-full flex-1">
-							<hr className="max-w-[80vw] h-4 min-w-[30vw] w-full"></hr>
-						</span>
-					</div>
-					<div>
-						<h3 className="prose-sm brightness-50">Meaning</h3>
-						<ul className="list-outside prose-sm">
-							{results ?
-								(
-									results.meanings.map((meaning, index) =>
-										<li key={`meaning-${index}`}>
-											{meaning.partOfSpeech}
-										</li>
-									)
-								) : (<span>...</span>)
-							}
-						</ul>
-					</div>
-					<div className="flex items-baseline">
-						<h3 className="prose-sm  brightness-50">Synonyms</h3>
-						<ul className="list-none flex prose-sm">
-							<li>
-								<a href="#">electronic keyboard</a>
-							</li>
-						</ul>
-					</div>
-				</section>
-
-				<section>
-					<div className="flex gap-8 items-center">
-						<h2 className="w-fit relative -top-3 prose-base">verb</h2>
-						<span className="w-full flex-1">
-							<hr className="max-w-full min-w-[30vw] w-full"></hr>
-						</span>
-					</div>
-					<div>
-						<h3 className="prose-sm ">Meaning</h3>
-						<ul className="list-outside prose-sm">
-							<li>
-								<div>
-									Lorem ipsum dolor sit amet, qui minim labore adipisicing minim
-									sint cillum sint consectetur cupidatat.
-								</div>
-								<div className="brightness-50">
-									Nostrud officia pariatur ut officia. Sit irure elit esse ea
-									nulla sunt ex occaecat reprehenderit commodo officia duis.
-								</div>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section className="mb-24">
-					<div className="flex items-baseline gap-x-4">
-						<h2 className="prose-sm text-base">Source</h2>
-						<a href="#">https://google.com/</a>
-					</div>
-				</section>
+				{ /* start: Results of searched dictionary word */}
+				<Results results={results} />
+				{ /* start: Results of searched dictionary word */}
 			</main>
 		</>
 	);
