@@ -1,33 +1,39 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Dispatch, FormEvent, Fragment, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import axios from 'axios';
+import axios from "axios";
 import { Inter } from "next/font/google";
 import { IBM_Plex_Serif } from "next/font/google";
-import useSWR, { Fetcher } from 'swr'
+import useSWR, { Fetcher } from "swr";
 import {
   useQuery,
   useMutation,
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query'
+} from "@tanstack/react-query";
 
-import { Dictionary } from "@/utils/sample-dict"
+import { Dictionary } from "@/utils/sample-dict";
 import { SkeletonLayout } from "@/components/skeleton";
+import { MyTabs } from "@/components/mytabs";
 
-
-const inter = Inter({ subsets: [ "latin" ] });
-const ibm = IBM_Plex_Serif({ weight: "400", subsets: [ "latin" ] });
-const URL = ' https://api.dictionaryapi.dev/api/v2/entries/en';
+const inter = Inter({ subsets: ["latin"] });
+const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
+const URL = " https://api.dictionaryapi.dev/api/v2/entries/en";
 
 const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
-}
+};
 
-const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id)
-
+const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id);
 
 async function getDictByKeyword(keyword: string) {
   let url = `${URL}/${keyword}`;
@@ -36,22 +42,20 @@ async function getDictByKeyword(keyword: string) {
 }
 
 export const SearchBar = (props: {
-  setSearch: Dispatch<SetStateAction<string>>,
-  search: string, useSubmit:
-  (event: FormEvent<HTMLFormElement>) => Promise<void>
+  setSearch: Dispatch<SetStateAction<string>>;
+  search: string;
+  useSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
 }) => {
   return (
     <>
       <section className="my-8">
-        <form
-          onSubmit={props.useSubmit}
-        >
+        <form onSubmit={props.useSubmit}>
           <div className="w-full grid relative">
             <input
               type={"text"}
               className={`px-2 w-full py-1 prose-sm outline outline-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-700 rounded-lg`}
               placeholder={"keyboard"}
-              onChange={event => props.setSearch(event.currentTarget.value)}
+              onChange={(event) => props.setSearch(event.currentTarget.value)}
             />
 
             <button>
@@ -63,17 +67,15 @@ export const SearchBar = (props: {
         </form>
 
         <sub className="hidden debug">Searching for {props.search}</sub>
-
       </section>
-
     </>
+  );
+};
 
-  )
-}
 export default function HomePage() {
-  const [ search, setSearch ] = useState("");
-  const [ results, setResults ] = useState<Dictionary | null>(null);
-  const [ loading, setLoading ] = useState(false);
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState<Dictionary | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const useSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,35 +84,32 @@ export default function HomePage() {
     let data = await getDictByKeyword(search);
     setLoading(false);
 
-    let dictionary: Dictionary = data[ 0 ];
+    let dictionary: Dictionary = data[0];
     if (dictionary !== null) {
       setResults(dictionary);
     } else {
       setResults(null);
     }
-
-  }
+  };
 
   const searchOnce = async (search: string) => {
     let data = await getDictByKeyword(search);
     setLoading(false);
-    let dictionary: Dictionary = data[ 0 ];
+    let dictionary: Dictionary = data[0];
     if (dictionary !== null) {
       setResults(dictionary);
     } else {
       setResults(null);
     }
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
     searchOnce("keyboard");
     return () => {
       setLoading(false);
-    }
-  }, [])
-
-
+    };
+  }, []);
 
   return (
     <>
@@ -124,14 +123,23 @@ export default function HomePage() {
       <header className="grayscale-[49%] container prose prose-lg mx-auto">
         <Navbar />
       </header>
-
       <main className={`px-8 min-h-screen w-full ${ibm.className} font-serif`}>
-        <SearchBar setSearch={setSearch} search={search} useSubmit={useSubmit} />
+        <SearchBar
+          setSearch={setSearch}
+          search={search}
+          useSubmit={useSubmit}
+        />
 
-        {loading === false && results !== null ?
-          <Results results={results} keyword={search} />
-          : (loading ? <SkeletonLayout /> : null)
-        }
+        {loading === false && results !== null ? (
+          <>
+            <MyTabs results={results} keyword={search} />
+            <div className="hidden">
+              <Results results={results} keyword={search} />
+            </div>
+          </>
+        ) : loading ? (
+          <SkeletonLayout />
+        ) : null}
       </main>
     </>
   );
@@ -154,17 +162,22 @@ function PlayIcon() {
         />
       </svg>
     </>
-  )
+  );
 }
 
-export const Results = (props: { results: Dictionary | null, keyword: string }) => {
+export const Results = (props: {
+  results: Dictionary | null;
+  keyword: string;
+}) => {
   let dict = props.results;
-  if (dict === null || typeof dict === 'undefined') {
-    return <section className="">
-      <p className="dark:text-red-300 tracking-wide">
-        <em className="hidden">{props.keyword}</em> Not Found!
-      </p>
-    </section>;
+  if (dict === null || typeof dict === "undefined") {
+    return (
+      <section className="">
+        <p className="dark:text-red-300 tracking-wide">
+          <em className="hidden">{props.keyword}</em> Not Found!
+        </p>
+      </section>
+    );
   } else {
     return (
       <div className="space-y-12">
@@ -175,13 +188,21 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
                 {dict ? <span>{dict.word}</span> : <>&nbsp;</>}
               </h1>
               <div className="prose-sm dark:text-violet-400">
-                {dict ?
-                  (<div className="inline-flex gap-x-2">
-                    {dict.phonetics.map((x, index) =>
-                      <a href={x.audio} className="prose-sm dark:text-violet-400 no-underline" key={`phonetics-${index}`}>{x.text}</a>
-                    )} </div>
-                  ) : <span>n.a</span>
-                }
+                {dict ? (
+                  <div className="inline-flex gap-x-2">
+                    {dict.phonetics.map((x, index) => (
+                      <a
+                        href={x.audio}
+                        className="prose-sm dark:text-violet-400 no-underline"
+                        key={`phonetics-${index}`}
+                      >
+                        {x.text}
+                      </a>
+                    ))}{" "}
+                  </div>
+                ) : (
+                  <span>n.a</span>
+                )}
               </div>
             </div>
             <div className="stroke-purple-400">
@@ -192,11 +213,15 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 
         <section>
           <div className="">
-            {!dict ? (<span>...</span>)
-              : (dict.meanings.map((meaning, index) =>
+            {!dict ? (
+              <span>...</span>
+            ) : (
+              dict.meanings.map((meaning, index) => (
                 <div key={`meaning-definitions-${meaning}-${index}`}>
                   <div className="flex gap-8 items-center h-8 mt-8 prose-base">
-                    <h2 className="w-fit relative prose-lg">{meaning.partOfSpeech}</h2>
+                    <h2 className="w-fit relative prose-lg">
+                      {meaning.partOfSpeech}
+                    </h2>
 
                     <span className="w-full flex-1">
                       <hr className="max-w-[80vw] h-4 min-w-[30vw] w-full"></hr>
@@ -212,7 +237,9 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
 
                         <div className="">
                           {y.synonyms.map((z, idx) => (
-                            <div key={`synonym-definition-${y}-${idx}`}>{z} </div>
+                            <div key={`synonym-definition-${y}-${idx}`}>
+                              {z}{" "}
+                            </div>
                           ))}
                         </div>
 
@@ -224,38 +251,51 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
                           ))}
                         </div>
 
-                        <div className="opacity-70">
-                          {y.example}
-                        </div>
+                        <div className="opacity-70">{y.example}</div>
                       </li>
                     ))}
                   </ul>
 
-                  <div key={`meaning-synonym-${meaning}-${index}`} className="flex items-baseline">
+                  <div
+                    key={`meaning-synonym-${meaning}-${index}`}
+                    className="flex items-baseline"
+                  >
                     <h3 className="prose-sm  opacity-50">Synonyms</h3>
                     <ul className="list-none gap-2 flex-wrap items-center flex prose-sm">
                       {meaning.synonyms.map((synonym, idx) => (
                         <div key={`synonym-${synonym}-${idx}`}>
-                          <a href={`https://google.com/search?q=${synonym}`}>{synonym}</a>
+                          <a href={`https://google.com/search?q=${synonym}`}>
+                            {synonym}
+                          </a>
                         </div>
                       ))}
                     </ul>
                   </div>
 
-                  <div key={`meaning-antonym-${meaning}-${index}`} className="flex items-baseline">
-                    <h3 key={`heading-antonym-${meaning}`} className="prose-sm  brightness-50">Antonyms</h3>
+                  <div
+                    key={`meaning-antonym-${meaning}-${index}`}
+                    className="flex items-baseline"
+                  >
+                    <h3
+                      key={`heading-antonym-${meaning}`}
+                      className="prose-sm  brightness-50"
+                    >
+                      Antonyms
+                    </h3>
 
                     <ul className="list-none gap-2 flex-wrap items-center flex prose-sm">
                       {meaning.antonyms.map((antonym, idx) => (
                         <div key={`${idx}-synonym-${antonym}-${idx}`}>
-                          <a href={`https://google.com/search?q=${antonym}`}>{antonym}</a>
+                          <a href={`https://google.com/search?q=${antonym}`}>
+                            {antonym}
+                          </a>
                         </div>
                       ))}
                     </ul>
                   </div>
-
                 </div>
-              ))}
+              ))
+            )}
           </div>
         </section>
 
@@ -264,27 +304,36 @@ export const Results = (props: { results: Dictionary | null, keyword: string }) 
             <hr className="max-w-[80vw] h-4 min-w-[30vw] w-full"></hr>
           </span>
           <div className="flex items-baseline gap-x-2">
-            <h2 className="prose-sm text-sm font-normal dark:opacity-30">Source</h2>
+            <h2 className="prose-sm text-sm font-normal dark:opacity-30">
+              Source
+            </h2>
             <ul className="list-none">
-              {dict && dict.sourceUrls.map((x, index) => (
-                <li className="flex gap-0 items-center prose-a:prose-sm" key={`meaning-${x}-${index}`}>
-                  <a className="
+              {dict &&
+                dict.sourceUrls.map((x, index) => (
+                  <li
+                    className="flex gap-0 items-center prose-a:prose-sm"
+                    key={`meaning-${x}-${index}`}
+                  >
+                    <a
+                      className="
 									inline-flex
-									" href={x}>{x}
-                    <div className="scale-50">
-                      <LinkIcon />
-                    </div>
-                  </a>
-                </li>
-              ))}
+									"
+                      href={x}
+                    >
+                      {x}
+                      <div className="scale-50">
+                        <LinkIcon />
+                      </div>
+                    </a>
+                  </li>
+                ))}
             </ul>
           </div>
         </section>
-
       </div>
-    )
+    );
   }
-}
+};
 
 export function SearchIcon({ className }: { className: string }): JSX.Element {
   return (
@@ -381,7 +430,10 @@ export function Navbar() {
                 </button>
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative blur-[1px] pointer-events-none ml-3">
+                <Menu
+                  as="div"
+                  className="relative blur-[1px] pointer-events-none ml-3"
+                >
                   <div className="h-8 relative w-8">
                     <Menu.Button className="rounded-full inset-0 relative h-full w-full grid active:outline-white">
                       <span className="hidden">Open user menu</span>
@@ -470,34 +522,64 @@ export function Navbar() {
   );
 }
 
-
 const LinkIcon = () => {
   return (
     <>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+        />
       </svg>
-
     </>
-  )
-}
+  );
+};
 
 const MoonIcon = () => {
   return (
     <>
-
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+        />
       </svg>
     </>
-  )
-}
+  );
+};
 const SunIcon = () => {
   return (
     <>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+        />
       </svg>
     </>
-  )
-}
+  );
+};
