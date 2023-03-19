@@ -55,7 +55,12 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
             </>
           </Tab.Panel>
           <Tab.Panel>
-            <a href="https://google.com/search?q=Love">I am feeling lucky!</a>
+            <a
+              href={`https://google.com/search?q=${props.keyword}`}
+              target="_blank"
+            >
+              I am feeling lucky!
+            </a>
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
