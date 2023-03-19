@@ -56,6 +56,25 @@ export default function Home() {
 
 	}
 
+	const searchOnce = async (search: string) => {
+		let data = await getDictByKeyword(search);
+		setLoading(false);
+		let dictionary: Dictionary = data[0];
+		if (dictionary !== null) {
+			setResults(dictionary);
+		} else {
+			setResults(null);
+		}
+	}
+
+	useEffect(() => {
+		setLoading(true);
+		searchOnce("keyboard");
+		return () => {
+		}
+	}, [])
+
+
 
 	return (
 		<>
@@ -101,7 +120,9 @@ export default function Home() {
 				{loading === false && results !== null ?
 					<Results results={results} keyword={search} />
 					: (
-						search.length > 0 && loading ?
+					// Removed search.length>0 for intial search at load.
+						 loading ?
+						// search.length > 0 && loading ?
 							<SkeletonLayout />
 							: <div>&nbsp;</div>
 					)
