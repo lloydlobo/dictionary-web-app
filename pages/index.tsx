@@ -29,8 +29,8 @@ const inter = Inter({ subsets: ["latin"] });
 const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
 const URL = " https://api.dictionaryapi.dev/api/v2/entries/en";
 
-const myLoader = ({ src, width, quality }) => {
-  return `${src}?w=${width}&q=${quality || 75}`;
+const myLoader = (props: { src: string, width: number, quality: number }) => {
+  return `${props.src}?w=${props.width}&q=${props.quality || 75}`;
 };
 
 const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id);
@@ -130,8 +130,8 @@ export default function HomePage() {
           useSubmit={useSubmit}
         />
 
-        { results !== null ? (
-        // {loading === false && results !== null ? (
+        {results !== null ? (
+          // {loading === false && results !== null ? (
           <>
             <MyTabs results={results} keyword={search} />
             <div className="hidden">

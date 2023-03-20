@@ -17,7 +17,7 @@ https://api.dictionaryapi.dev/api/v2/entries/en/hello
 Your users should be able to:
 
 [x] Search for words using the input field
-[ ] See the Free Dictionary API's response for the searched word
+[x] See the Free Dictionary API's response for the searched word
 [ ] See a form validation message when trying to submit a blank form
 [ ] Play the audio file for a word when it's available
 [ ] Switch between serif, sans serif, and monospace fonts
