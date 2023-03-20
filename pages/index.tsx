@@ -103,13 +103,13 @@ export default function HomePage() {
     }
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   searchOnce("keyboard");
-  //   return () => {
-  //     setLoading(false);
-  //   };
-  // }, []);
+  useEffect(() => {
+    setLoading(true);
+    searchOnce("keyboard");
+    return () => {
+      setLoading(false);
+    };
+  }, []);
 
   return (
     <>
@@ -130,8 +130,8 @@ export default function HomePage() {
           useSubmit={useSubmit}
         />
 
-        {results !== null ? (
-          // {loading === false && results !== null ? (
+          {loading === false && results !== null ? (
+        // {results !== null ? (
           <>
             <MyTabs results={results} keyword={search} />
             <div className="hidden">
