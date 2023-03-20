@@ -29,9 +29,9 @@ const inter = Inter({ subsets: ["latin"] });
 const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
 const URL = " https://api.dictionaryapi.dev/api/v2/entries/en";
 
-const myLoader = (props: { src: string, width: number, quality: number }) => {
-  return `${props.src}?w=${props.width}&q=${props.quality || 75}`;
-};
+// const myLoader = (props: { src: string, width: number, quality: number }) => {
+//   return `${props.src}?w=${props.width}&q=${props.quality || 75}`;
+// };
 
 const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id);
 
@@ -382,19 +382,19 @@ export function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image
+                  <img
                     // placeholder="blur"
-                    loader={myLoader}
+                    // loader={myLoader}
                     width={32}
                     height={32}
                     className="block h-8 w-auto lg:hidden"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=200"
                     alt="Your Company"
                   />
-                  <Image
+                  <img
                     width={32}
                     height={32}
-                    loader={myLoader}
+                    // loader={myLoader}
                     // placeholder="blur"
                     className="hidden h-8 w-auto lg:block"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
