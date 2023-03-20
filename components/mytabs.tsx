@@ -64,11 +64,7 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
               className="flex items-center no-underline py-24 lg:py-36 mx-auto w-fit "
               >
                 <span
-                  className={`gradient-border relative bg-zinc-900 flex items-center justify-center w-40 h-12 text-white text-sm`}
-                //   className={`gradient-border
-                // rounded-xl dark:bg-violet-900/90 flex mx-auto text-center w-40 items-center h-12 text-sm justify-between gap-0 relative p-4
-                // before:content-[''] before:w-40 before:h-12 before:origin-center before:-z-20 before:absolute before:scale-y-[108%] before:scale-x-[103%]  before:-top-0 before:rounded-xl before:left-0 before:bg-gradient-to-bl before:from-orange-400 before:opacity-50 before:hover:opacity-100 before:animate-pulse before:to-purple-300
-                // `}
+                  className={`gradient-border font-sans hover:scale-105 relative bg-zinc-900 flex items-center justify-center w-40 h-12 text-white text-sm`}
                 >I am feeling lucky!</span>
               </a>
             </Tab.Panel>
