@@ -13,6 +13,7 @@
 
 html {
   color-scheme: dark white;
+  scroll-behavior: smooth;
 }
 
 body {

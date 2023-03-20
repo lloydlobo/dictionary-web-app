@@ -61,7 +61,7 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
                 // TODO: Add voice recognition button here or in input search bar.
                 href={`https://google.com/search?q=${props.keyword}`}
                 target="_blank"
-              className="flex items-center no-underline py-24 lg:py-36 mx-auto w-fit "
+                className="flex items-center no-underline py-24 lg:py-36 mx-auto w-fit "
               >
                 <span
                   className={`gradient-border font-sans hover:scale-105 relative bg-zinc-900 flex items-center justify-center w-40 h-12 text-white text-sm`}
@@ -86,9 +86,10 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
     width: calc(100% + var(--border-width) * 2);
     border-radius: calc(2 * var(--border-width));
     background: linear-gradient(60deg, #e78524, #f36144, #de4d6a, #a056ba, #6163a7, #1188ac, #16a48a, #6fcb75);
+    background-size: 300% 300%;
     z-index: -1;
     animation: animate-gradient 3s ease alternate infinite;
-    background-size: 300% 300%;
+    -webkit-animation: animate-gradient 3s ease alternate infinite;
 
     }
 
