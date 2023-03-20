@@ -23,48 +23,90 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
     ],
   });
   return (
-    <section className="grid py-2 place-self-start">
-      <Tab.Group>
-        <Tab.List className="grid grid-cols-3 dark:bg-violet-900/[0.02] justify-between gap-0 rounded-xl p-1">
-          {Object.keys(categories).map((category) => (
-            <Tab
-              key={category}
-              className={({ selected }) =>
-                classNames(
-                  "py-2.5 text-sm border-purple-400 font-medium leading-5 text-purple-400",
-                  // "ring-white ring-opacity-60 ring-offset-2 ring-offset-purple-400 focus:outline-none focus:ring-2",
-                  selected
-                    ? "disabled:bg-white border-purple-400 border-b shadow"
-                    : "text-purple-400 hover:bg-purple-100/[0.12] hover:text-white"
-                )
-              }
-            >
-              {category}
-            </Tab>
-          ))}
-        </Tab.List>
-        <Tab.Panels className={`mt-6`}>
-          <Tab.Panel>
-            <>
-              <Results results={props.results} keyword={props.keyword} />
-            </>
-          </Tab.Panel>
-          <Tab.Panel>
-            <>
-              <ResultsJSON results={props.results} keyword={props.keyword} />
-            </>
-          </Tab.Panel>
-          <Tab.Panel>
-            <a
-              href={`https://google.com/search?q=${props.keyword}`}
-              target="_blank"
-            >
-              I am feeling lucky!
-            </a>
-          </Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
-    </section>
+    <>
+
+      <section className="grid py-2 place-self-start">
+        <Tab.Group>
+          <Tab.List className="grid grid-cols-3 dark:bg-violet-900/[0.02] justify-between gap-0 rounded-xl p-1">
+            {Object.keys(categories).map((category) => (
+              <Tab
+                key={category}
+                className={({ selected }) =>
+                  classNames(
+                    "py-2.5 text-sm border-purple-400 font-medium leading-5 text-purple-400",
+                    // "ring-white ring-opacity-60 ring-offset-2 ring-offset-purple-400 focus:outline-none focus:ring-2",
+                    selected
+                      ? "disabled:bg-white border-purple-400 border-b shadow"
+                      : "text-purple-400 hover:bg-purple-100/[0.12] hover:text-white"
+                  )
+                }
+              >
+                {category}
+              </Tab>
+            ))}
+          </Tab.List>
+          <Tab.Panels className={`mt-6`}>
+            <Tab.Panel>
+              <>
+                <Results results={props.results} keyword={props.keyword} />
+              </>
+            </Tab.Panel>
+            <Tab.Panel>
+              <>
+                <ResultsJSON results={props.results} keyword={props.keyword} />
+              </>
+            </Tab.Panel>
+            <Tab.Panel>
+              <a
+                // TODO: Add voice recognition button here or in input search bar.
+                href={`https://google.com/search?q=${props.keyword}`}
+                target="_blank"
+              className="flex items-center no-underline py-24 lg:py-36 mx-auto w-fit "
+              >
+                <span
+                  className={`gradient-border relative bg-zinc-900 flex items-center justify-center w-40 h-12 text-white text-sm`}
+                //   className={`gradient-border
+                // rounded-xl dark:bg-violet-900/90 flex mx-auto text-center w-40 items-center h-12 text-sm justify-between gap-0 relative p-4
+                // before:content-[''] before:w-40 before:h-12 before:origin-center before:-z-20 before:absolute before:scale-y-[108%] before:scale-x-[103%]  before:-top-0 before:rounded-xl before:left-0 before:bg-gradient-to-bl before:from-orange-400 before:opacity-50 before:hover:opacity-100 before:animate-pulse before:to-purple-300
+                // `}
+                >I am feeling lucky!</span>
+              </a>
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+      </section>
+      <style jsx>{
+        `
+    .gradient-border{
+    --border-width: 2px;
+    border-radius: var(--border-width);
+    }
+    .gradient-border:after{
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--border-width));
+    left: calc(-1 * var(--border-width));
+    height: calc(100% + var(--border-width) * 2);
+    width: calc(100% + var(--border-width) * 2);
+    border-radius: calc(2 * var(--border-width));
+    background: linear-gradient(60deg, #e78524, #f36144, #de4d6a, #a056ba, #6163a7, #1188ac, #16a48a, #6fcb75);
+    z-index: -1;
+    animation: animate-gradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+
+    }
+
+    @keyframes animate-gradient {
+    from, to {
+    background-position: 0% 50%;
+    }
+    50% {
+    background-position: 100% 50%;
+    }
+    }
+    `
+      }</style>
+    </>
   );
 }
 
@@ -81,15 +123,15 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
   } else {
     return (
       <section>
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-center justify-end">
+          <div className="sr-only">
             {props.results ? <span>{props.results.word} </span> : <>Oops</>}
           </div>
-          <div className="">
+        </div>
+        <div className="space-y-3 w-[83vw] flex flex-col md:w-auto relative text-xs overflow-x-scroll container">
+          <div className="opacity-80 relative ml-auto">
             <CopyToClipboard data={JSON.stringify(props.results, null, 2)} />
           </div>
-        </div>
-        <div className="space-y-12 w-[83vw] md:w-auto relative text-xs overflow-x-scroll container">
           <pre>{JSON.stringify(props.results, null, 2)}</pre>
         </div>
       </section>
@@ -114,19 +156,17 @@ export const CopyToClipboard = (props: { data: string }) => {
     <div>
       <div>
         <button
-          className="prose-sm flex flex-row-reverse items-center gap-0.5 text-end "
+          className="prose-sm  justify-between flex  items-center transition-transform gap-0.5 text-end "
           onClick={copyToClipboard}
         >
           {isCopied ? (
-            <span className="text-purple-400 dark:text-primary">
-              Copied
-            </span>
+            <span className="text-purple-400 transition-opacity animate-pulse dark:text-primary">Copied</span>
           ) : (
             <span className="font-bold tracking-wider decoration-green-400 underline-offset-8 dark:decoration-accent">
               Copy{" "}
             </span>
           )}
-          <div className="scale-75">
+          <div className="scale-75 flex-shrink-0">
             <CopyIcon />
           </div>
         </button>
