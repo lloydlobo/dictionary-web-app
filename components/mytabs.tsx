@@ -72,7 +72,7 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
                     className="no-underline"
                   >
                     <span
-                      className={`gradient-border relative flex h-10 w-36 items-center justify-center dark:bg-zinc-900 text-sm dark:text-white hover:scale-105 md:h-12 bg-purple-400 text-white md:w-40`}
+                      className={`gradient-border relative flex h-10 w-36 items-center justify-center bg-purple-400 text-sm text-white hover:scale-105 dark:bg-zinc-900 dark:text-white md:h-12 md:w-40`}
                     >
                       I am feeling lucky!
                     </span>
@@ -145,7 +145,7 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
             {props.results ? <span>{props.results.word} </span> : <>Oops</>}
           </h1>
         </div>
-        <div className="container relative flex w-[83vw] flex-col space-y-3 overflow-x-scroll text-xs max-w-screen-sm md:w-auto">
+        <div className="container relative flex w-[83vw] max-w-screen-sm flex-col space-y-3 overflow-x-scroll text-xs md:w-auto">
           <div className="relative ml-auto opacity-80">
             <CopyToClipboard data={JSON.stringify(props.results, null, 2)} />
           </div>

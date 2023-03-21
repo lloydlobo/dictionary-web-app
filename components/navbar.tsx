@@ -4,6 +4,7 @@ import { useEffect, Fragment, ReactNode, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import useSound from "use-sound";
 
 const navigation = [
   { name: "Home", href: "#", current: true },
@@ -40,6 +41,8 @@ function ToggleThemeProvider({
   title = "Toggle theme",
 }: ToggleThemeProviderProps) {
   const pseudoLoadingEnabled = true;
+  const [lightsOn] = useSound("/sounds/lights-on.mp3", { volume: 0.25 });
+  const [lightsOff] = useSound("/sounds/lights-off.mp3", { volume: 0.25 });
 
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -93,7 +96,10 @@ function ToggleThemeProvider({
       <>
         <div
           id={`dark`}
-          onClick={(e) => switchTheme(e)}
+          onClick={(e) => {
+            theme === "dark" ? lightsOn() : lightsOff();
+            switchTheme(e);
+          }}
           className={`${disabled ? "hidden" : "block"}`}
         >
           <ToggleTheme enabled={theme === "dark"} />
@@ -161,12 +167,16 @@ function ToggleTheme(props: { enabled: boolean }) {
 function ToggleFont() {
   const fontFamily = [{ name: "serif" }, { name: "sans-serif" }];
   const [selected, setSelected] = useState(fontFamily[0]);
+
+  const [playActive] = useSound("/sounds/click-down.mp3", { volume: 0.25 });
+
+
   const UseSetFontFamily = (e: any) => {
     const val = e.name;
     setSelected(e);
     if (val !== null) {
       // document.documentElement.style.setProperty('--font-color', '#bada56');
-      document.documentElement.style.setProperty('--font-family', `${val}`);
+      document.documentElement.style.setProperty("--font-family", `${val}`);
       // document.documentElement.style.setProperty('--font-family', `${val} !important`);
     }
 
@@ -178,7 +188,7 @@ function ToggleFont() {
     //   return () => {
     //   }
     // }, [])
-  }
+  };
 
   return (
     <div className="z-50 w-32">
@@ -186,6 +196,11 @@ function ToggleFont() {
         <div className="relative mt-1">
           <Listbox.Button
             title="toggle font family"
+            onClick={() => {
+              // selected.name === "serif" ? playOn() : playOff()
+              selected.name === "serif" ? playActive() : playActive();
+            }}
+            // onFocus={() => playActive()}
             className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-end focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
           >
             <span className="block truncate capitalize">{selected.name}</span>
