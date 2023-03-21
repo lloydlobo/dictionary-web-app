@@ -181,7 +181,7 @@ function ToggleFont() {
   }
 
   return (
-    <div className="z-50 w-28">
+    <div className="z-50 w-32">
       <Listbox value={selected} onChange={(e) => UseSetFontFamily(e)}>
         <div className="relative mt-1">
           <Listbox.Button
