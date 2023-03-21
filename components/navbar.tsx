@@ -17,11 +17,13 @@ export default function Navbar() {
     <>
       <div className="navbar flex items-center">
         <div className="navbar_start flex-1">
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
         <div className="navbar_end flex items-center gap-4">
           <ToggleFont />
-          <ToggleThemeProvider></ToggleThemeProvider>
+          <ToggleThemeProvider />
         </div>
       </div>
     </>
@@ -59,23 +61,26 @@ function ToggleThemeProvider({
               // A pseudo shell of `<ToggleTheme>` used only if not mounted for consistency.
               title="toggle theme"
               disabled
-              className={`${pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
-                } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+              className={`${
+                pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
+              } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <span className="sr-only">Use setting</span>
-        <span
-          aria-hidden="true"
-          className={`${pseudoLoadingEnabled ? "translate-x-4" : "translate-x-0"}
+              <span
+                aria-hidden="true"
+                className={`${
+                  pseudoLoadingEnabled ? "translate-x-4" : "translate-x-0"
+                }
             pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
-        >
-          <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
-            {pseudoLoadingEnabled ? (
-              <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
-            ) : (
-              <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
-            )}
-          </div>
-        </span>
+              >
+                <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
+                  {pseudoLoadingEnabled ? (
+                    <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
+                  ) : (
+                    <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
+                  )}
+                </div>
+              </span>
             </Switch>
           </div>
         </div>
@@ -138,7 +143,7 @@ function ToggleTheme(props: { isNotDefault: boolean }) {
         <span
           aria-hidden="true"
           className={`${enabled ? "translate-x-[1.1rem]" : "translate-x-0"}
-            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
+            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white ring-0 transition-all duration-200 ease-in-out`}
         >
           <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
             {enabled ? (
@@ -163,7 +168,7 @@ function ToggleFont() {
         <div className="relative mt-1">
           <Listbox.Button
             title="toggle font family"
-            className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-end shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+            className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-end focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
           >
             <span className="block truncate capitalize">{selected.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -188,9 +193,10 @@ function ToggleFont() {
                   key={fontIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none items-center gap-2 py-2 px-2 pr-4 disabled:pl-10 
-                    ${active
-                      ? "dark:bg-purple-100/80 dark:text-purple-700"
-                      : "dark:text-purple-300"
+                    ${
+                      active
+                        ? "dark:bg-purple-100/80 dark:text-purple-700"
+                        : "dark:text-purple-300"
                     }`
                   }
                   value={font}
@@ -198,14 +204,16 @@ function ToggleFont() {
                   {({ active }) => (
                     <>
                       <span
-                        className={`flex gap-2 truncate capitalize ${active ? "font-medium" : "font-normal"
-                          }`}
+                        className={`flex gap-2 truncate capitalize ${
+                          active ? "font-medium" : "font-normal"
+                        }`}
                       >
                         <span
-                          className={`${selected.name === font.name
-                            ? "opacity-100"
-                            : "opacity-0"
-                            }`}
+                          className={`${
+                            selected.name === font.name
+                              ? "opacity-100"
+                              : "opacity-0"
+                          }`}
                         >
                           <CheckIcon className="h-4 w-4" />
                         </span>

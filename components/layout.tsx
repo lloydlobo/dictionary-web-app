@@ -2,6 +2,7 @@ import React, { ReactNode, useState, useEffect } from "react";
 import Head from "next/head";
 import { ThemeToggler } from "@/components/theme-toggler";
 import Navbar, { Logo } from "@/components/navbar";
+import Link from "next/link";
 
 // import Header from "./Header";
 // import { ClockNav } from "@/pages";
@@ -60,7 +61,9 @@ function Footer() {
         <div className="">
           <div className="mx-auto flex flex-col items-center space-y-6 px-0 py-6 md:px-0 lg:flex-row lg:justify-between lg:space-y-0">
             <div className="flex items-center space-x-6">
-            <Logo/>
+              <Link href="/">
+                <Logo />
+              </Link>
               <p className="mr-auto flex-1 text-center text-sm ">
                 © 2023 Lloyd Lobo.
               </p>
