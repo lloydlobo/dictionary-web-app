@@ -49,7 +49,7 @@ export const SearchBar = (props: {
           <div className="relative grid w-full">
             <input
               type={"text"}
-              className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-purple-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-400/90 dark:focus:ring-violet-700`}
+              className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-purple-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-200/40 dark:focus:ring-violet-700`}
               placeholder={"keyboard"}
               onChange={(event) => props.setSearch(event.currentTarget.value)}
             />

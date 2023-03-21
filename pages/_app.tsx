@@ -6,7 +6,7 @@ import type { Component } from "react";
 import localFont from "next/font/local";
 // import { SessionProvider } from "next-auth/react";
 
-// Font files can be colocated inside of `pages`
+// // Font files can be colocated inside of `pages`
 const charterRegularFont = localFont({
   src: "./fonts/Charter/charter_regular.woff2",
   variable: "--font-charter",
@@ -45,11 +45,7 @@ export default function App({
         attribute="class"
       >
         <div
-          className={`
-            ${charterRegularFont.variable}
-            ${ibmRegular.variable} 
-            font-serif
-        `}
+          className={` ${charterRegularFont.variable} ${ibmRegular.variable} `}
         >
           <Component {...pageProps} />
         </div>

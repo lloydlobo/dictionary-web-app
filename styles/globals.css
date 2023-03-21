@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-serif: --font-charter;
+  --font-sans: --font-ibm;
+  --font-family: var(--font-sans);
+}
+
+
 *,
 *::before,
 *::after {
@@ -19,12 +26,13 @@ html {
 html,
 body {
   overflow-x: hidden;
-  @apply font-serif;
 }
 
 body {
   font-feature-settings: "kern";
-  @apply font-serif min-h-[100vh] bg-white dark:bg-zinc-900 container mx-auto;
+  @apply min-h-[100vh] bg-white dark:bg-zinc-900 container mx-auto;
+  color: var(--font-color) !important;
+  font-family: var(--font-family) !important;
 }
 
 main {
@@ -40,4 +48,9 @@ main {
   html {
     color-scheme: dark;
   }
+}
+
+
+* {
+  font-family: var(--font-family) !important;
 }
