@@ -171,23 +171,16 @@ function ToggleFont() {
   const [playActive] = useSound("/sounds/click-down.mp3", { volume: 0.25 });
 
 
-  const UseSetFontFamily = (e: any) => {
-    const val = e.name;
-    setSelected(e);
-    if (val !== null) {
-      // document.documentElement.style.setProperty('--font-color', '#bada56');
-      document.documentElement.style.setProperty("--font-family", `${val}`);
-      // document.documentElement.style.setProperty('--font-family', `${val} !important`);
+  const UseSetFontFamily = (fontSelected: any) => {
+    const font = fontSelected.name;
+    setSelected(fontSelected);
+    if (font !== null) {
+      if (font === "serif") {
+        document.documentElement.style.setProperty('--font-family', 'var(--font-serif)');
+      } else if (font === "sans-serif") {
+        document.documentElement.style.setProperty('--font-family', 'var(--font-sans)');
+      }
     }
-
-    // useEffect(() => {
-    //   e.preventDefault();
-    //   console.log(e.currentTarget.value);
-    //   document.documentElement.style.setProperty('--font-color', '#bada56');
-    //   document.documentElement.style.setProperty('--font-family', selected.name);
-    //   return () => {
-    //   }
-    // }, [])
   };
 
   return (

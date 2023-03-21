@@ -14,14 +14,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-ibm)", ...fontFamily.sans],
-        serif: ["var(--font-charter)", ...fontFamily.serif],
+        sans: ["var(--font-inter)", ...fontFamily.sans],
+        serif: ["var(--font-source-serif-pro)", ...fontFamily.serif],
+
+        // sans: ["var(--font-ibm)", ...fontFamily.sans],
+        // serif: ["var(--font-charter)", ...fontFamily.serif],
       },
     },
   },
-  // future: {
-  //   removeDeprecatedGapUtilities: true,
-  //   purgeLayersByDefault: true,
-  // },
   plugins: [require("@tailwindcss/typography")],
 };
