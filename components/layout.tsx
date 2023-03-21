@@ -25,7 +25,6 @@ export default function Layout({ children, title = "Dictionary" }: Props) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
 
-
       <Header />
 
       {children}
@@ -37,7 +36,7 @@ export default function Layout({ children, title = "Dictionary" }: Props) {
 
 export function Header() {
   return (
-    <header className="md:max-w-screen-sm px-8 md:px-0 mx-auto">
+    <header className="mx-auto px-8 md:max-w-screen-sm md:px-0">
       <noscript>
         <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
       </noscript>

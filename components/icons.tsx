@@ -57,7 +57,7 @@ export function MoonIcon({ className }: { className?: string }): JSX.Element {
       </svg>
     </>
   );
-};
+}
 export function SunIcon({ className }: { className?: string }): JSX.Element {
   return (
     <>
@@ -77,4 +77,4 @@ export function SunIcon({ className }: { className?: string }): JSX.Element {
       </svg>
     </>
   );
-};
+}

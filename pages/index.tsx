@@ -114,7 +114,9 @@ export default function HomePage() {
   return (
     <>
       <Layout>
-        <main className={`min-h-screen w-full px-8 ${ibm.className} font-serif`}>
+        <main
+          className={`min-h-screen w-full px-8 ${ibm.className} font-serif`}
+        >
           <SearchBar
             setSearch={setSearch}
             search={search}
@@ -172,7 +174,7 @@ export const Results = (props: {
     );
   } else {
     return (
-      <div className="space-y-12 prose-lg">
+      <div className="prose-lg space-y-12">
         <section className="">
           <div className="flex justify-between">
             <div className="grid">
@@ -215,7 +217,7 @@ export const Results = (props: {
                       {meaning.partOfSpeech}
                     </h2>
 
-                    <span className="w-full flex-1 hidden">
+                    <span className="hidden w-full flex-1">
                       <hr className="h-4 w-full min-w-[30vw] max-w-[80vw]"></hr>
                     </span>
                   </div>
@@ -356,7 +358,6 @@ const navigation = [
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-
 
 const LinkIcon = () => {
   return (
