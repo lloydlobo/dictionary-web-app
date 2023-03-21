@@ -39,72 +39,64 @@ function ToggleThemeProvider({
   children,
   title = "Toggle theme",
 }: ToggleThemeProviderProps) {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [dropdown, setDropdown] = useState(false);
-  const { forcedTheme } = useTheme();
-  // Theme is forced, we shouldn't allow user to change the theme
-  const disabled = !!forcedTheme;
   const pseudoLoadingEnabled = true;
 
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const { forcedTheme } = useTheme();
+
+  // Theme is forced, we shouldn't allow user to change the theme
+  const disabled = !!forcedTheme;
+
   useEffect(() => {
-    // useEffect only runs on the client, so now we can safely show the UI
     setMounted(true);
   }, []);
-
-  if (!mounted) {
-    return (
-      <>
-        <div className="">
-          <div className="grid place-content-center place-self-center pt-2">
-            <Switch
-              // A pseudo shell of `<ToggleTheme>` used only if not mounted for consistency.
-              title="toggle theme"
-              disabled
-              className={`${
-                pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
-              } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-            >
-              <span className="sr-only">Use setting</span>
-              <span
-                aria-hidden="true"
-                className={`${
-                  pseudoLoadingEnabled ? "translate-x-4" : "translate-x-0"
-                }
-            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
-              >
-                <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
-                  {pseudoLoadingEnabled ? (
-                    <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
-                  ) : (
-                    <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
-                  )}
-                </div>
-              </span>
-            </Switch>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   // e.target may select the svg or span too. e.currentTarget selects the parent button.
   const switchTheme = (e: any) => {
     e.preventDefault();
-    console.log(theme, e.currentTarget);
     let defaultTheme = e.currentTarget.id;
     setTheme(defaultTheme === theme ? "light" : "dark");
-    console.log(theme, e.currentTarget);
-    setDropdown(!dropdown);
   };
 
-  return (
-    <>
-      <div id={`dark`} onClick={(e) => switchTheme(e)}>
-        <ToggleTheme isNotDefault={theme === "dark"} />
-      </div>
-    </>
-  );
+  if (!mounted) {
+    return (
+      <>
+        <div className="grid place-content-center place-self-center pt-2">
+          <Switch // A pseudo shell of `<ToggleTheme>` used only if not mounted for consistency.
+            title="toggle theme"
+            disabled
+            className={`${pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
+              } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          >
+            <span className="sr-only">Toggle Theme</span>
+            <span
+              aria-hidden="true"
+              className={`${pseudoLoadingEnabled ? "translate-x-[1.1rem]" : "translate-x-0"
+                }
+            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
+            >
+              <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
+                {pseudoLoadingEnabled ? (
+                  <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
+                ) : (
+                  <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
+                )}
+              </div>
+            </span>
+          </Switch>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div id={`dark`} onClick={(e) => switchTheme(e)} className={`${disabled ? "hidden" : "block"}`} >
+          <ToggleTheme enabled={theme === "dark"} />
+        </div>
+      </>
+    );
+  }
 }
 
 export function Logo() {
@@ -128,25 +120,28 @@ export function Logo() {
   );
 }
 
-function ToggleTheme(props: { isNotDefault: boolean }) {
-  const [enabled, setEnabled] = useState(props.isNotDefault); //false
+function ToggleTheme(props: { enabled: boolean }) {
+  // const [enabled, setEnabled] = useState(props.isNotDefault); //false
   return (
     <div className="grid place-content-center place-self-center pt-2">
       <Switch
-        checked={enabled}
+        // checked={enabled}
+        // onChange={setEnabled}
+        // onChange={props.isNotDefault}
+        // className={`${enabled ? "bg-violet-900" : "bg-amber-500/90"}
+        checked={props.enabled}
         title="toggle theme"
-        onChange={setEnabled}
-        className={`${enabled ? "bg-violet-900" : "bg-amber-500/90"}
+        className={`${props.enabled ? "bg-violet-900" : "bg-amber-500/90"}
           relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
-        <span className="sr-only">Use setting</span>
+        <span className="sr-only">Toggle Theme</span>
         <span
           aria-hidden="true"
-          className={`${enabled ? "translate-x-[1.1rem]" : "translate-x-0"}
+          className={`${props.enabled ? "translate-x-[1.1rem]" : "translate-x-0"}
             pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white ring-0 transition-all duration-200 ease-in-out`}
         >
           <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
-            {enabled ? (
+            {props.enabled ? (
               <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
             ) : (
               <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
@@ -193,10 +188,9 @@ function ToggleFont() {
                   key={fontIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none items-center gap-2 py-2 px-2 pr-4 disabled:pl-10 
-                    ${
-                      active
-                        ? "dark:bg-purple-100/80 dark:text-purple-700"
-                        : "dark:text-purple-300"
+                    ${active
+                      ? "dark:bg-purple-100/80 dark:text-purple-700"
+                      : "dark:text-purple-300"
                     }`
                   }
                   value={font}
@@ -204,16 +198,14 @@ function ToggleFont() {
                   {({ active }) => (
                     <>
                       <span
-                        className={`flex gap-2 truncate capitalize ${
-                          active ? "font-medium" : "font-normal"
-                        }`}
+                        className={`flex gap-2 truncate capitalize ${active ? "font-medium" : "font-normal"
+                          }`}
                       >
                         <span
-                          className={`${
-                            selected.name === font.name
-                              ? "opacity-100"
-                              : "opacity-0"
-                          }`}
+                          className={`${selected.name === font.name
+                            ? "opacity-100"
+                            : "opacity-0"
+                            }`}
                         >
                           <CheckIcon className="h-4 w-4" />
                         </span>
