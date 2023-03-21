@@ -102,7 +102,7 @@ function ToggleThemeProvider({
   );
 }
 
-function Logo() {
+export function Logo() {
   return (
     <div className="logo">
       <svg

@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import Head from "next/head";
 import { ThemeToggler } from "@/components/theme-toggler";
-import Navbar from "@/components/navbar";
+import Navbar, { Logo } from "@/components/navbar";
 
 // import Header from "./Header";
 // import { ClockNav } from "@/pages";
@@ -56,17 +56,11 @@ export function Header() {
 function Footer() {
   return (
     <>
-      <footer className="z-10 mx-auto font-sans md:max-w-screen-sm">
-        <div className="bg-gray-100 dark:bg-gray-800">
-          <div className="mx-auto flex flex-col items-center space-y-6 px-4 py-6 md:px-0 lg:flex-row lg:justify-between lg:space-y-0">
-            <div className="">
-              <div className="flex items-center space-x-2">
-                <p className="ml-2 hidden text-lg leading-none 2xl:text-xl">
-                  lloyd lobo
-                </p>
-              </div>
-            </div>
+      <footer className="z-10 mx-auto md:max-w-screen-sm">
+        <div className="">
+          <div className="mx-auto flex flex-col items-center space-y-6 px-0 py-6 md:px-0 lg:flex-row lg:justify-between lg:space-y-0">
             <div className="flex items-center space-x-6">
+            <Logo/>
               <p className="mr-auto flex-1 text-center text-sm ">
                 © 2023 Lloyd Lobo.
               </p>
