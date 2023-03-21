@@ -145,7 +145,7 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
             {props.results ? <span>{props.results.word} </span> : <>Oops</>}
           </h1>
         </div>
-        <div className="container relative flex w-[83vw] flex-col space-y-3 overflow-x-scroll text-xs md:w-auto">
+        <div className="container relative flex w-[83vw] flex-col space-y-3 overflow-x-scroll text-xs max-w-screen-sm md:w-auto">
           <div className="relative ml-auto opacity-80">
             <CopyToClipboard data={JSON.stringify(props.results, null, 2)} />
           </div>
