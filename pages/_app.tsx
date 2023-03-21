@@ -11,6 +11,7 @@ const charterRegularFont = localFont({
   src: "./fonts/Charter/charter_regular.woff2",
   variable: "--font-charter",
 });
+
 const ibmRegular = localFont({
   variable: "--font-ibm",
   src: [
@@ -21,6 +22,7 @@ const ibmRegular = localFont({
     },
   ],
 });
+
 /*
  * Dictionary web app
  *
@@ -44,9 +46,9 @@ export default function App({
       >
         <div
           className={`
-        ${ibmRegular.variable} 
-        ${charterRegularFont.variable}
-        font-[var(--font-charter)] 
+            ${charterRegularFont.variable}
+            ${ibmRegular.variable} 
+            font-serif
         `}
         >
           <Component {...pageProps} />
