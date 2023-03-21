@@ -72,7 +72,7 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
                     className="no-underline"
                   >
                     <span
-                      className={`gradient-border relative flex h-10 w-36 items-center justify-center bg-zinc-900 font-sans text-sm text-white hover:scale-105 md:h-12 md:w-40`}
+                      className={`gradient-border relative flex h-10 w-36 items-center justify-center dark:bg-zinc-900 text-sm dark:text-white hover:scale-105 md:h-12 bg-purple-400 text-white md:w-40`}
                     >
                       I am feeling lucky!
                     </span>
@@ -173,7 +173,7 @@ export const CopyToClipboard = (props: { data: string }) => {
     <div>
       <div>
         <button
-          className="prose-sm  flex items-center  justify-between gap-0.5 text-end transition-transform "
+          className="prose-sm flex items-center justify-between gap-0.5 text-end transition-transform "
           onClick={copyToClipboard}
         >
           {isCopied ? (
