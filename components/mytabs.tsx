@@ -24,19 +24,19 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
   });
   return (
     <>
-      <section className="grid place-self-start py-2">
+      <section className="grid transition place-self-start py-2">
         <Tab.Group>
-          <Tab.List className="grid grid-cols-3 justify-between gap-0 rounded-xl p-1 dark:bg-violet-900/[0.02]">
+          <Tab.List className="grid grid-cols-3 justify-between gap-0 overflow-clip rounded-xl bg-violet-400/[0.15] p-0 dark:bg-violet-900/[0.02]">
             {Object.keys(categories).map((category) => (
               <Tab
                 key={category}
                 className={({ selected }) =>
                   classNames(
-                    "border-purple-400 py-2.5 text-sm font-medium leading-5 text-purple-400",
+                    "dark:border-purple-400 border-purple-600 py-2.5 prose-sm font-medium leading-5 dark:text-purple-400",
                     // "ring-white ring-opacity-60 ring-offset-2 ring-offset-purple-400 focus:outline-none focus:ring-2",
                     selected
-                      ? "border-b border-purple-400 shadow disabled:bg-white"
-                      : "text-purple-400 hover:bg-purple-100/[0.12] hover:text-white"
+                      ? "border-b border-purple-600 dark:border-purple-40  text-purple-800 disabled:bg-white"
+                      : "dark:text-purple-400 text-purple-500 disabled:dark:hover:bg-purple-100/[0.12] hover:text-purple-900 dark:hover:text-purple-300"
                   )
                 }
               >
