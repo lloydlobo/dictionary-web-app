@@ -161,9 +161,7 @@ function ToggleTheme(props: { enabled: boolean }) {
 function ToggleFont() {
   const fontFamily = [{ name: "serif" }, { name: "sans-serif" }];
   const [selected, setSelected] = useState(fontFamily[0]);
-
-
-  const useSetFontFamily = (e: any) => {
+  const UseSetFontFamily = (e: any) => {
     const val = e.name;
     setSelected(e);
     if (val !== null) {
@@ -181,10 +179,9 @@ function ToggleFont() {
     // }, [])
   }
 
-
   return (
     <div className="z-50 w-28">
-      <Listbox value={selected} onChange={(e) => useSetFontFamily(e)}>
+      <Listbox value={selected} onChange={(e) => UseSetFontFamily(e)}>
         <div className="relative mt-1">
           <Listbox.Button
             title="toggle font family"
