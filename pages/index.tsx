@@ -6,6 +6,7 @@ import {
   Fragment,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -152,8 +153,11 @@ export const Results = (props: {
   results: Dictionary | null;
   keyword: string;
 }) => {
+  const defaultSound = '/sounds/click-down.mp3';
   const [soundUrl, setSoundUrl] = useState('/sounds/click-down.mp3');
   const [playWord] = useSound(soundUrl, { volume: 0.25 });
+  const refPlayIcon = useRef<HTMLButtonElement | null>(null);
+  const refPhonetics = useRef<HTMLDivElement | null>(null);
 
   let dict = props.results;
   if (dict === null || typeof dict === "undefined") {
@@ -175,15 +179,20 @@ export const Results = (props: {
               </h1>
               <div className="prose-sm dark:text-violet-400">
                 {dict ? (
-                  <div className="inline-flex gap-x-2">
+                  <div
+                    ref={refPhonetics}
+                    className="inline-flex focus-within:animate-pulse focus:animate-ping  gap-x-2">
                     {dict.phonetics.map((x, index) => {
-
                       return (
                         <button
                           key={`phonetics-${index}`}
+                          className={`${(x.audio.length > 0) ? '' : 'opacity-75 pointer-events-none disabled:pointer-events-none'}`}
                           onClick={() => {
-                            alert(x.audio);
                             setSoundUrl(x.audio);
+                            if (refPlayIcon.current !== null) {
+                              // refPlayIcon.current.click();
+                              refPlayIcon.current.focus();
+                            }
                           }
 
                           }
@@ -192,7 +201,7 @@ export const Results = (props: {
                             href={x.audio}
                             onClick={(e) => e.preventDefault()}
                             className="prose-sm no-underline dark:text-violet-400"
-                          >
+                          > w
                             {x.text}
                           </a>
                         </button>
@@ -204,7 +213,19 @@ export const Results = (props: {
                 )}
               </div>
             </div>
-            <button onClick={() => { playWord() }} className="stroke-purple-400">
+            <button ref={refPlayIcon} onClick={(e) => {
+              e.preventDefault();
+              if (soundUrl !== defaultSound) {
+                playWord();
+              } else {
+                if (refPhonetics.current !== null) {
+                  refPhonetics.current.focus();
+                } else {
+                  console.error("Something went wrong while getting word audio url");
+                  // alert("Oops");
+                }
+              }
+            }} className="focus:animate-bounce hover:animate-none stroke-purple-400">
               <PlayIcon />
             </button>
           </div>
