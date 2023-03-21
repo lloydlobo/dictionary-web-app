@@ -169,6 +169,7 @@ function ToggleFont() {
       document.documentElement.style.setProperty('--font-family', `${val}`);
       // document.documentElement.style.setProperty('--font-family', `${val} !important`);
     }
+
     // useEffect(() => {
     //   e.preventDefault();
     //   console.log(e.currentTarget.value);

@@ -109,7 +109,7 @@ export default function HomePage() {
     <>
       <Layout>
         <main
-          className={`min-h-screen w-full px-8 ${ibm.className} font-serif`}
+          className={`min-h-screen w-full px-8 md:px-0 ${ibm.className} font-serif`}
         >
           <SearchBar
             setSearch={setSearch}

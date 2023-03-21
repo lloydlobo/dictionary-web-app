@@ -35,8 +35,8 @@ body {
   font-family: var(--font-family) !important;
 }
 
-main {
-  @apply prose dark:prose-invert lg:prose-lg mx-auto;
+main{
+  @apply prose dark:prose-invert md:max-w-screen-sm lg:prose-lg mx-auto;
 }
 
 [data-theme='dark'] [data-hide-on-theme='dark'],
