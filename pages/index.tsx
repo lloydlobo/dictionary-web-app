@@ -195,13 +195,12 @@ export const Results = (props: {
                           onClick={() => {
                             setSoundUrl(x.audio);
                             if (refPlayIcon.current !== null) {
-                              // refPlayIcon.current.click();
-                              refPlayIcon.current.style.outline = '1px solid purple';
+                              refPlayIcon.current.style.outline = '2px solid purple';
                               setTimeout(() => {
                                 if (refPlayIcon.current !== null) {
                                   refPlayIcon.current.style.outline = '0px solid transparent';
                                 }
-                              }, 400);
+                              }, 1000);
                             }
                           }
 
@@ -231,12 +230,12 @@ export const Results = (props: {
                   playWord();
                 } else {
                   if (refPhonetics.current !== null) {
-                    refPhonetics.current.style.outline = '1px solid purple';
+                    refPhonetics.current.style.outline = '2px solid purple';
                     setTimeout(() => {
                       if (refPhonetics.current !== null) {
                         refPhonetics.current.style.outline = '0px solid purple';
                       }
-                    }, 400);
+                    }, 1000);
                   } else {
                     console.error("Something went wrong while getting word audio url");
                     // alert("Oops");
@@ -273,22 +272,26 @@ export const Results = (props: {
                         <p className="my-0 py-0">{y.definition}</p>
 
                         <div className="">
-                          {y.synonyms.map((z, idx) => (
+                          {y.synonyms.length > 0 ? y.synonyms.map((z, idx) => (
                             <div key={`synonym-definition-${y}-${idx}`}>
                               {z}{" "}
                             </div>
-                          ))}
+                          ))
+                            : <span className="sr-only">None</span>
+                          }
                         </div>
 
                         <div className="">
-                          {y.antonyms.map((z, idx) => (
+                          {y.antonyms.length > 0 ? y.antonyms.map((z, idx) => (
                             <div key={`antonyms-definition-${y}-${idx}`}>
                               {z}
                             </div>
-                          ))}
+                          ))
+                            : <span className="sr-only">None</span>
+                          }
                         </div>
 
-                        <div className="opacity-70">{y.example}</div>
+                        <blockquote className="opacity-70">{y.example}</blockquote>
                       </li>
                     ))}
                   </ul>
@@ -297,38 +300,47 @@ export const Results = (props: {
                     key={`meaning-synonym-${meaning}-${index}`}
                     className="flex items-baseline"
                   >
-                    <h3 className="prose-sm  opacity-50">Synonyms</h3>
-                    <ul className="prose-sm flex list-none flex-wrap items-center gap-2">
-                      {meaning.synonyms.map((synonym, idx) => (
-                        <div key={`synonym-${synonym}-${idx}`}>
-                          <a href={`https://google.com/search?q=${synonym}`}>
-                            {synonym}
-                          </a>
-                        </div>
-                      ))}
-                    </ul>
+                    {meaning.synonyms.length > 0 ? (
+                      <>
+                        <h3 className="prose-sm  opacity-50">Synonyms</h3>
+                        <ul className="prose-sm flex list-none flex-wrap items-center gap-2">
+                          {meaning.synonyms.map((synonym, idx) => (
+                            <div key={`synonym-${synonym}-${idx}`}>
+                              <a href={`https://google.com/search?q=${synonym}`}>
+                                {synonym}
+                              </a>
+                            </div>
+                          ))
+                          }
+                        </ul>
+                      </>
+                    ) : <span className="sr-only">None</span>}
                   </div>
 
                   <div
                     key={`meaning-antonym-${meaning}-${index}`}
                     className="flex items-baseline"
                   >
-                    <h3
-                      key={`heading-antonym-${meaning}`}
-                      className="prose-sm  brightness-50"
-                    >
-                      Antonyms
-                    </h3>
+                    {meaning.antonyms.length > 0 ? (
+                      <>
+                        <h3
+                          key={`heading-antonym-${meaning}`}
+                          className="prose-sm  brightness-50"
+                        >
+                          Antonyms
+                        </h3>
 
-                    <ul className="prose-sm flex list-none flex-wrap items-center gap-2">
-                      {meaning.antonyms.map((antonym, idx) => (
-                        <div key={`${idx}-synonym-${antonym}-${idx}`}>
-                          <a href={`https://google.com/search?q=${antonym}`}>
-                            {antonym}
-                          </a>
-                        </div>
-                      ))}
-                    </ul>
+                        <ul className="prose-sm flex list-none flex-wrap items-center gap-2">
+                          {meaning.antonyms.map((antonym, idx) => (
+                            <div key={`${idx}-synonym-${antonym}-${idx}`}>
+                              <a href={`https://google.com/search?q=${antonym}`}>
+                                {antonym}
+                              </a>
+                            </div>
+                          ))}
+                        </ul>
+                      </>
+                    ) : <span className="sr-only">None</span>}
                   </div>
                 </div>
               ))
