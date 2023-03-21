@@ -24,7 +24,7 @@ body {
 
 body {
   font-feature-settings: "kern";
-  @apply min-h-[100vh] prose-slate bg-current dark:prose-neutral dark:bg-zinc-900 container mx-auto;
+  @apply min-h-[100vh] prose-slate bg-white dark:prose-neutral dark:bg-zinc-900 container mx-auto;
 }
 
 
