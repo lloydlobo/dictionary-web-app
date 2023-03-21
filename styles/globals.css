@@ -12,15 +12,33 @@
 }
 
 html {
-  color-scheme: dark white;
+  color-scheme: dark light;
   scroll-behavior: smooth;
 }
 
+html,
 body {
-  @apply min-h-[100vh] container mx-auto;
+  overflow-x: hidden;
+  @apply font-serif;
 }
+
+body {
+  font-feature-settings: "kern";
+  @apply min-h-[100vh] prose-slate bg-current dark:prose-neutral dark:bg-zinc-900 container mx-auto;
+}
+
 
 section {
-  @apply prose lg:prose-lg dark:prose-invert mx-auto;
+  @apply prose dark:prose-invert lg:prose-lg mx-auto;
 }
 
+[data-theme='dark'] [data-hide-on-theme='dark'],
+[data-theme='light'] [data-hide-on-theme='light'] {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

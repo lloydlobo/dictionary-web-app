@@ -24,19 +24,18 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
   });
   return (
     <>
-
-      <section className="grid py-2 place-self-start">
+      <section className="grid place-self-start py-2">
         <Tab.Group>
-          <Tab.List className="grid grid-cols-3 dark:bg-violet-900/[0.02] justify-between gap-0 rounded-xl p-1">
+          <Tab.List className="grid grid-cols-3 justify-between gap-0 rounded-xl p-1 dark:bg-violet-900/[0.02]">
             {Object.keys(categories).map((category) => (
               <Tab
                 key={category}
                 className={({ selected }) =>
                   classNames(
-                    "py-2.5 text-sm border-purple-400 font-medium leading-5 text-purple-400",
+                    "border-purple-400 py-2.5 text-sm font-medium leading-5 text-purple-400",
                     // "ring-white ring-opacity-60 ring-offset-2 ring-offset-purple-400 focus:outline-none focus:ring-2",
                     selected
-                      ? "disabled:bg-white border-purple-400 border-b shadow"
+                      ? "border-b border-purple-400 shadow disabled:bg-white"
                       : "text-purple-400 hover:bg-purple-100/[0.12] hover:text-white"
                   )
                 }
@@ -61,48 +60,58 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
                 // TODO: Add voice recognition button here or in input search bar.
                 href={`https://google.com/search?q=${props.keyword}`}
                 target="_blank"
-                className="flex items-center no-underline py-24 lg:py-36 mx-auto w-fit "
+                className="mx-auto flex w-fit items-center py-24 no-underline lg:py-36 "
               >
                 <span
-                  className={`gradient-border font-sans hover:scale-105 relative bg-zinc-900 flex items-center justify-center w-40 h-12 text-white text-sm`}
-                >I am feeling lucky!</span>
+                  className={`gradient-border relative flex h-12 w-40 items-center justify-center bg-zinc-900 font-sans text-sm text-white hover:scale-105`}
+                >
+                  I am feeling lucky!
+                </span>
               </a>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </section>
-      <style jsx>{
-        `
-    .gradient-border{
-    --border-width: 2px;
-    border-radius: var(--border-width);
-    }
-    .gradient-border:after{
-    content: '';
-    position: absolute;
-    top: calc(-1 * var(--border-width));
-    left: calc(-1 * var(--border-width));
-    height: calc(100% + var(--border-width) * 2);
-    width: calc(100% + var(--border-width) * 2);
-    border-radius: calc(2 * var(--border-width));
-    background: linear-gradient(60deg, #e78524, #f36144, #de4d6a, #a056ba, #6163a7, #1188ac, #16a48a, #6fcb75);
-    background-size: 300% 300%;
-    z-index: -1;
-    animation: animate-gradient 3s ease alternate infinite;
-    -webkit-animation: animate-gradient 3s ease alternate infinite;
+      <style jsx>{`
+        .gradient-border {
+          --border-width: 2px;
+          border-radius: var(--border-width);
+        }
+        .gradient-border:after {
+          content: "";
+          position: absolute;
+          top: calc(-1 * var(--border-width));
+          left: calc(-1 * var(--border-width));
+          height: calc(100% + var(--border-width) * 2);
+          width: calc(100% + var(--border-width) * 2);
+          border-radius: calc(2 * var(--border-width));
+          background: linear-gradient(
+            60deg,
+            #e78524,
+            #f36144,
+            #de4d6a,
+            #a056ba,
+            #6163a7,
+            #1188ac,
+            #16a48a,
+            #6fcb75
+          );
+          background-size: 300% 300%;
+          z-index: -1;
+          animation: animate-gradient 3s ease alternate infinite;
+          -webkit-animation: animate-gradient 3s ease alternate infinite;
+        }
 
-    }
-
-    @keyframes animate-gradient {
-    from, to {
-    background-position: 0% 50%;
-    }
-    50% {
-    background-position: 100% 50%;
-    }
-    }
-    `
-      }</style>
+        @keyframes animate-gradient {
+          from,
+          to {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+      `}</style>
     </>
   );
 }
@@ -112,7 +121,7 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
   if (dict === null || typeof dict === "undefined") {
     return (
       <section className="">
-        <p className="dark:text-red-300 tracking-wide">
+        <p className="tracking-wide dark:text-red-300">
           <em className="hidden">{props.keyword}</em> Not Found!
         </p>
       </section>
@@ -125,8 +134,8 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
             {props.results ? <span>{props.results.word} </span> : <>Oops</>}
           </div>
         </div>
-        <div className="space-y-3 w-[83vw] flex flex-col md:w-auto relative text-xs overflow-x-scroll container">
-          <div className="opacity-80 relative ml-auto">
+        <div className="container relative flex w-[83vw] flex-col space-y-3 overflow-x-scroll text-xs md:w-auto">
+          <div className="relative ml-auto opacity-80">
             <CopyToClipboard data={JSON.stringify(props.results, null, 2)} />
           </div>
           <pre>{JSON.stringify(props.results, null, 2)}</pre>
@@ -153,17 +162,19 @@ export const CopyToClipboard = (props: { data: string }) => {
     <div>
       <div>
         <button
-          className="prose-sm  justify-between flex  items-center transition-transform gap-0.5 text-end "
+          className="prose-sm  flex items-center  justify-between gap-0.5 text-end transition-transform "
           onClick={copyToClipboard}
         >
           {isCopied ? (
-            <span className="text-purple-400 transition-opacity animate-pulse dark:text-primary">Copied</span>
+            <span className="dark:text-primary animate-pulse text-purple-400 transition-opacity">
+              Copied
+            </span>
           ) : (
-            <span className="font-bold tracking-wider decoration-green-400 underline-offset-8 dark:decoration-accent">
+            <span className="dark:decoration-accent font-bold tracking-wider decoration-green-400 underline-offset-8">
               Copy{" "}
             </span>
           )}
-          <div className="scale-75 flex-shrink-0">
+          <div className="flex-shrink-0 scale-75">
             <CopyIcon />
           </div>
         </button>
@@ -181,7 +192,7 @@ function CopyIcon() {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+        className="h-6 w-6"
       >
         <path
           strokeLinecap="round"
