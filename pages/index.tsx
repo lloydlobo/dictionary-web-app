@@ -50,10 +50,15 @@ export const SearchBar = (props: {
         <form onSubmit={props.useSubmit}>
           <div className="relative grid w-full">
             <input
+              onChange={(event) => props.setSearch(event.currentTarget.value)}
               type={"text"}
+              // pattern={`/^[A-Za-z]+$/i`}
+              // pattern={`\d`}
+              minLength={1}
+              maxLength={20}
+              required
               className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-purple-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-200/40 dark:focus:ring-violet-700`}
               placeholder={"keyboard"}
-              onChange={(event) => props.setSearch(event.currentTarget.value)}
             />
             <button>
               <SearchIcon
@@ -218,26 +223,26 @@ export const Results = (props: {
                 )}
               </div>
             </div>
-            <button ref={refPlayIcon} 
-            className="rounded-full transition-all stroke-purple-400"
-            onClick={(e) => {
-              e.preventDefault();
-              if (soundUrl !== defaultSound) {
-                playWord();
-              } else {
-                if (refPhonetics.current !== null) {
-                  refPhonetics.current.style.outline = '1px solid purple';
-                  setTimeout(() => {
-                    if (refPhonetics.current !== null) {
-                      refPhonetics.current.style.outline = '0px solid purple';
-                    }
-                  }, 400);
+            <button ref={refPlayIcon}
+              className="rounded-full transition-all stroke-purple-400"
+              onClick={(e) => {
+                e.preventDefault();
+                if (soundUrl !== defaultSound) {
+                  playWord();
                 } else {
-                  console.error("Something went wrong while getting word audio url");
-                  // alert("Oops");
+                  if (refPhonetics.current !== null) {
+                    refPhonetics.current.style.outline = '1px solid purple';
+                    setTimeout(() => {
+                      if (refPhonetics.current !== null) {
+                        refPhonetics.current.style.outline = '0px solid purple';
+                      }
+                    }, 400);
+                  } else {
+                    console.error("Something went wrong while getting word audio url");
+                    // alert("Oops");
+                  }
                 }
-              }
-            }}>
+              }}>
               <PlayIcon />
             </button>
           </div>
