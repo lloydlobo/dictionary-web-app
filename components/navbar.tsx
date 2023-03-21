@@ -141,7 +141,7 @@ function ToggleTheme(props: { enabled: boolean }) {
         // className={`${enabled ? "bg-violet-900" : "bg-amber-500/90"}
         checked={props.enabled}
         title="toggle theme"
-        className={`${props.enabled ? "bg-violet-900" : "bg-amber-500/90"}
+        className={`${props.enabled ? "bg-purple-400/80" : "bg-yellow-500/50"}
           relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
         <span className="sr-only">Toggle Theme</span>
@@ -149,13 +149,13 @@ function ToggleTheme(props: { enabled: boolean }) {
           aria-hidden="true"
           className={`${props.enabled ? "translate-x-[1.1rem]" : "translate-x-0"
             }
-            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white ring-0 transition-all duration-200 ease-in-out`}
+            pointer-events-none inline-block shadow aspect-square w-[0.9rem] transform rounded-full bg-white ring-0 transition-all duration-200 ease-in-out`}
         >
           <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
             {props.enabled ? (
-              <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
+              <MoonIcon className="aspect-square w-[0.85rem] fill-purple-600 stroke-[1px] text-purple-600" />
             ) : (
-              <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
+              <SunIcon className="aspect-square w-[0.9rem] fill-yellow-300  stroke-[2.25px] text-yellow-500" />
             )}
           </div>
         </span>
