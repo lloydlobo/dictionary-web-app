@@ -21,8 +21,7 @@ export default function Navbar() {
         </div>
         <div className="navbar_end flex items-center gap-4">
           <ToggleFont />
-          <ToggleThemeProvider>
-          </ToggleThemeProvider>
+          <ToggleThemeProvider></ToggleThemeProvider>
         </div>
       </div>
     </>
@@ -38,13 +37,13 @@ function ToggleThemeProvider({
   children,
   title = "Toggle theme",
 }: ToggleThemeProviderProps) {
-
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const [dropdown, setDropdown] = useState(false);
   const { forcedTheme } = useTheme();
   // Theme is forced, we shouldn't allow user to change the theme
   const disabled = !!forcedTheme;
+  const pseudoLoadingEnabled = true;
 
   useEffect(() => {
     // useEffect only runs on the client, so now we can safely show the UI
@@ -52,33 +51,36 @@ function ToggleThemeProvider({
   }, []);
 
   if (!mounted) {
-    return <>
-    <div className="">
-    <div className="grid place-content-center place-self-center pt-2">
-      <Switch
-      // A pseudo shell of `<ToggleTheme>` used only if not mounted for consistency.
-        // checked={enabled}
-        title="toggle theme"
-        // onChange={setEnabled}
-        className={`${false ? "bg-violet-900" : "bg-amber-600/90"} relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-      >
-        <span className="sr-only">Use setting</span>
+    return (
+      <>
+        <div className="">
+          <div className="grid place-content-center place-self-center pt-2">
+            <Switch
+              // A pseudo shell of `<ToggleTheme>` used only if not mounted for consistency.
+              title="toggle theme"
+              disabled
+              className={`${pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
+                } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+            >
+              <span className="sr-only">Use setting</span>
         <span
           aria-hidden="true"
-          className={`${false ? "translate-x-4" : "translate-x-0"} pointer-events-none inline-block aspect-square w-[1rem] transform rounded-full bg-neutral-100 shadow-lg ring-0 transition duration-200 ease-in-out`}
+          className={`${pseudoLoadingEnabled ? "translate-x-4" : "translate-x-0"}
+            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
         >
-          <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-sm transition-all">
-            {false ? (
-              <MoonIcon className="h-3 w-3 stroke-[3px] text-purple-800" />
+          <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
+            {pseudoLoadingEnabled ? (
+              <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
             ) : (
-              <SunIcon className="h-3 w-3 stroke-[3px] text-amber-900" />
+              <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
             )}
           </div>
         </span>
-      </Switch>
-    </div>
-    </div>
-    </>;
+            </Switch>
+          </div>
+        </div>
+      </>
+    );
   }
 
   // e.target may select the svg or span too. e.currentTarget selects the parent button.
@@ -86,16 +88,18 @@ function ToggleThemeProvider({
     e.preventDefault();
     console.log(theme, e.currentTarget);
     let defaultTheme = e.currentTarget.id;
-    setTheme(defaultTheme === theme ? 'light' : 'dark');
+    setTheme(defaultTheme === theme ? "light" : "dark");
     console.log(theme, e.currentTarget);
     setDropdown(!dropdown);
   };
 
-  return (<>
-    <div id={`dark`} onClick={(e) => switchTheme(e)}>
-            <ToggleTheme isNotDefault={theme === 'light'} />
-    </div>
-  </>);
+  return (
+    <>
+      <div id={`dark`} onClick={(e) => switchTheme(e)}>
+        <ToggleTheme isNotDefault={theme === "dark"} />
+      </div>
+    </>
+  );
 }
 
 function Logo() {
@@ -120,27 +124,27 @@ function Logo() {
 }
 
 function ToggleTheme(props: { isNotDefault: boolean }) {
-  const [enabled, setEnabled] = useState(props.isNotDefault);//false
+  const [enabled, setEnabled] = useState(props.isNotDefault); //false
   return (
     <div className="grid place-content-center place-self-center pt-2">
       <Switch
         checked={enabled}
         title="toggle theme"
         onChange={setEnabled}
-        className={`${enabled ? "bg-violet-900" : "bg-amber-600/90"}
+        className={`${enabled ? "bg-violet-900" : "bg-amber-500/90"}
           relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
         <span className="sr-only">Use setting</span>
         <span
           aria-hidden="true"
-          className={`${enabled ? "translate-x-4" : "translate-x-0"}
-            pointer-events-none inline-block aspect-square w-[1rem] transform rounded-full bg-neutral-100 shadow-lg ring-0 transition duration-200 ease-in-out`}
+          className={`${enabled ? "translate-x-[1.1rem]" : "translate-x-0"}
+            pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
         >
-          <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-sm transition-all">
+          <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
             {enabled ? (
-              <MoonIcon className="h-3 w-3 stroke-[3px] text-purple-800" />
+              <MoonIcon className="aspect-square w-[0.85rem] fill-violet-600 stroke-[1px] text-violet-800" />
             ) : (
-              <SunIcon className="h-3 w-3 stroke-[3px] text-amber-900" />
+              <SunIcon className="aspect-square w-[0.9rem] fill-amber-600  stroke-[2px] text-amber-800" />
             )}
           </div>
         </span>
