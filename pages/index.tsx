@@ -20,20 +20,14 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-
 import { Dictionary } from "@/utils/sample-dict";
 import { SkeletonLayout } from "@/components/skeleton";
 import { MyTabs } from "@/components/mytabs";
 import { ThemeToggler } from "@/components/theme-toggler";
 import Layout from "@/components/layout";
-
 const inter = Inter({ subsets: ["latin"] });
 const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
 const URL = " https://api.dictionaryapi.dev/api/v2/entries/en";
-
-// const myLoader = (props: { src: string, width: number, quality: number }) => {
-//   return `${props.src}?w=${props.width}&q=${props.quality || 75}`;
-// };
 
 const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id);
 
@@ -55,7 +49,7 @@ export const SearchBar = (props: {
           <div className="relative grid w-full">
             <input
               type={"text"}
-              className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-neutral-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-400/90 dark:focus:ring-violet-700`}
+              className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-purple-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-400/90 dark:focus:ring-violet-700`}
               placeholder={"keyboard"}
               onChange={(event) => props.setSearch(event.currentTarget.value)}
             />

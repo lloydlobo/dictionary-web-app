@@ -66,14 +66,16 @@ function ToggleThemeProvider({
           <Switch // A pseudo shell of `<ToggleTheme>` used only if not mounted for consistency.
             title="toggle theme"
             disabled
-            className={`${pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
-              } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+            className={`${
+              pseudoLoadingEnabled ? "bg-violet-900" : "bg-amber-600/90"
+            } relative inline-flex min-h-[19px] w-[36px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
             <span className="sr-only">Toggle Theme</span>
             <span
               aria-hidden="true"
-              className={`${pseudoLoadingEnabled ? "translate-x-[1.1rem]" : "translate-x-0"
-                }
+              className={`${
+                pseudoLoadingEnabled ? "translate-x-[1.1rem]" : "translate-x-0"
+              }
             pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white shadow-lg ring-0 transition-all duration-200 ease-in-out`}
             >
               <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
@@ -91,7 +93,11 @@ function ToggleThemeProvider({
   } else {
     return (
       <>
-        <div id={`dark`} onClick={(e) => switchTheme(e)} className={`${disabled ? "hidden" : "block"}`} >
+        <div
+          id={`dark`}
+          onClick={(e) => switchTheme(e)}
+          className={`${disabled ? "hidden" : "block"}`}
+        >
           <ToggleTheme enabled={theme === "dark"} />
         </div>
       </>
@@ -137,7 +143,9 @@ function ToggleTheme(props: { enabled: boolean }) {
         <span className="sr-only">Toggle Theme</span>
         <span
           aria-hidden="true"
-          className={`${props.enabled ? "translate-x-[1.1rem]" : "translate-x-0"}
+          className={`${
+            props.enabled ? "translate-x-[1.1rem]" : "translate-x-0"
+          }
             pointer-events-none inline-block aspect-square w-[0.9rem] transform rounded-full bg-white ring-0 transition-all duration-200 ease-in-out`}
         >
           <div className="absolute inset-0 z-10 grid place-content-center rounded-full backdrop-blur-[2px] transition-all">
@@ -188,9 +196,10 @@ function ToggleFont() {
                   key={fontIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none items-center gap-2 py-2 px-2 pr-4 disabled:pl-10 
-                    ${active
-                      ? "dark:bg-purple-100/80 dark:text-purple-700"
-                      : "dark:text-purple-300"
+                    ${
+                      active
+                        ? "dark:bg-purple-100/80 dark:text-purple-700"
+                        : "dark:text-purple-300"
                     }`
                   }
                   value={font}
@@ -198,14 +207,16 @@ function ToggleFont() {
                   {({ active }) => (
                     <>
                       <span
-                        className={`flex gap-2 truncate capitalize ${active ? "font-medium" : "font-normal"
-                          }`}
+                        className={`flex gap-2 truncate capitalize ${
+                          active ? "font-medium" : "font-normal"
+                        }`}
                       >
                         <span
-                          className={`${selected.name === font.name
-                            ? "opacity-100"
-                            : "opacity-0"
-                            }`}
+                          className={`${
+                            selected.name === font.name
+                              ? "opacity-100"
+                              : "opacity-0"
+                          }`}
                         >
                           <CheckIcon className="h-4 w-4" />
                         </span>

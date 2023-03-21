@@ -1,3 +1,5 @@
+const { fontFamily } = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -11,6 +13,12 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {},
+  },
+  extend: {
+    fontFamily: {
+      sans: ["var(--font-ibm)", ...fontFamily.sans],
+      serif: ["var(--font-charter)", ...fontFamily.serif],
+    },
   },
   // future: {
   //   removeDeprecatedGapUtilities: true,

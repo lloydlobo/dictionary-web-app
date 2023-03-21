@@ -24,7 +24,7 @@ body {
 
 body {
   font-feature-settings: "kern";
-  @apply min-h-[100vh] bg-white dark:bg-zinc-900 container mx-auto;
+  @apply font-serif min-h-[100vh] bg-white dark:bg-zinc-900 container mx-auto;
 }
 
 
