@@ -56,18 +56,29 @@ export function MyTabs(props: { results: Dictionary | null; keyword: string }) {
               </>
             </Tab.Panel>
             <Tab.Panel>
-              <a
-                // TODO: Add voice recognition button here or in input search bar.
-                href={`https://google.com/search?q=${props.keyword}`}
-                target="_blank"
-                className="mx-auto flex w-fit items-center py-24 no-underline lg:py-36 "
-              >
-                <span
-                  className={`gradient-border relative flex h-12 w-40 items-center justify-center bg-zinc-900 font-sans text-sm text-white hover:scale-105`}
-                >
-                  I am feeling lucky!
-                </span>
-              </a>
+              <div className="grid place-self-center">
+                <div className="flex justify-between">
+                  <h1 className="mn-2 pb-2">
+                    {props.results ? (
+                      <span>{props.results.word} </span>
+                    ) : (
+                      <>Oops</>
+                    )}
+                  </h1>
+                  <a
+                    // TODO: Add voice recognition button here or in input search bar.
+                    href={`https://google.com/search?q=${props.keyword}`}
+                    target="_blank"
+                    className="no-underline"
+                  >
+                    <span
+                      className={`gradient-border relative flex h-10 w-36 items-center justify-center bg-zinc-900 font-sans text-sm text-white hover:scale-105 md:h-12 md:w-40`}
+                    >
+                      I am feeling lucky!
+                    </span>
+                  </a>
+                </div>
+              </div>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -129,10 +140,10 @@ function ResultsJSON(props: { results: Dictionary | null; keyword: string }) {
   } else {
     return (
       <section>
-        <div className="flex items-center justify-end">
-          <div className="sr-only">
+        <div className="flex items-center justify-start">
+          <h1 className="mb-2 pb-2">
             {props.results ? <span>{props.results.word} </span> : <>Oops</>}
-          </div>
+          </h1>
         </div>
         <div className="container relative flex w-[83vw] flex-col space-y-3 overflow-x-scroll text-xs md:w-auto">
           <div className="relative ml-auto opacity-80">
