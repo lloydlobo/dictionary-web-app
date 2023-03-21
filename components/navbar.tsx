@@ -47,7 +47,7 @@ function ToggleTheme() {
         checked={enabled}
         title="toggle theme"
         onChange={setEnabled}
-        className={`${enabled ? 'bg-violet-900' : 'bg-amber-400/90'}
+        className={`${enabled ? 'bg-violet-900' : 'bg-amber-600/90'}
           relative inline-flex items-center min-h-[19px] w-[36px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
       >
         <span className="sr-only">Use setting</span>
@@ -56,7 +56,7 @@ function ToggleTheme() {
           className={`${enabled ? 'translate-x-4' : 'translate-x-0'}
             pointer-events-none inline-block aspect-square w-[1rem] transform rounded-full bg-neutral-100 shadow-lg ring-0 transition duration-200 ease-in-out`}
         >
-        <div className="absolute backdrop-blur-sm z-10 grid place-content-center rounded-full inset-0">
+        <div className="absolute backdrop-blur-sm z-10 transition-all grid place-content-center rounded-full inset-0">
           {enabled ? <MoonIcon className="h-3 w-3 text-purple-800 stroke-[3px]" /> : <SunIcon  className="h-3 w-3 text-amber-900 stroke-[3px]"  />}
         </div>
         </span>
@@ -80,6 +80,7 @@ function ToggleFont() {
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <Listbox.Button
+            title="toggle font family"
             className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-end shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
           >
             <span className="block truncate capitalize">{selected.name}</span>
