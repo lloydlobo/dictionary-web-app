@@ -25,6 +25,7 @@ import { SkeletonLayout } from "@/components/skeleton";
 import { MyTabs } from "@/components/mytabs";
 import { ThemeToggler } from "@/components/theme-toggler";
 import Layout from "@/components/layout";
+import useSound from "use-sound";
 const inter = Inter({ subsets: ["latin"] });
 const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
 const URL = " https://api.dictionaryapi.dev/api/v2/entries/en";
@@ -117,13 +118,7 @@ export default function HomePage() {
             useSubmit={useSubmit}
           />
           {loading === false && results !== null ? (
-            // {results !== null ? (
-            <>
-              <MyTabs results={results} keyword={search} />
-              <div className="hidden">
-                <Results results={results} keyword={search} />
-              </div>
-            </>
+            <MyTabs results={results} keyword={search} />
           ) : loading ? (
             <SkeletonLayout />
           ) : null}
@@ -157,6 +152,9 @@ export const Results = (props: {
   results: Dictionary | null;
   keyword: string;
 }) => {
+  const [soundUrl, setSoundUrl] = useState('/sounds/click-down.mp3');
+  const [playWord] = useSound(soundUrl, { volume: 0.25 });
+
   let dict = props.results;
   if (dict === null || typeof dict === "undefined") {
     return (
@@ -178,24 +176,37 @@ export const Results = (props: {
               <div className="prose-sm dark:text-violet-400">
                 {dict ? (
                   <div className="inline-flex gap-x-2">
-                    {dict.phonetics.map((x, index) => (
-                      <a
-                        href={x.audio}
-                        className="prose-sm no-underline dark:text-violet-400"
-                        key={`phonetics-${index}`}
-                      >
-                        {x.text}
-                      </a>
-                    ))}{" "}
+                    {dict.phonetics.map((x, index) => {
+
+                      return (
+                        <button
+                          key={`phonetics-${index}`}
+                          onClick={() => {
+                            alert(x.audio);
+                            setSoundUrl(x.audio);
+                          }
+
+                          }
+                        >
+                          <a
+                            href={x.audio}
+                            onClick={(e) => e.preventDefault()}
+                            className="prose-sm no-underline dark:text-violet-400"
+                          >
+                            {x.text}
+                          </a>
+                        </button>
+                      )
+                    })}{" "}
                   </div>
                 ) : (
                   <span>n.a</span>
                 )}
               </div>
             </div>
-            <div className="stroke-purple-400">
+            <button onClick={() => { playWord() }} className="stroke-purple-400">
               <PlayIcon />
-            </div>
+            </button>
           </div>
         </section>
 
