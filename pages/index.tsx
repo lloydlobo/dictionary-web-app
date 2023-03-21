@@ -181,17 +181,22 @@ export const Results = (props: {
                 {dict ? (
                   <div
                     ref={refPhonetics}
-                    className="inline-flex focus-within:animate-pulse focus:animate-ping  gap-x-2">
+                    className="inline-flex relative rounded-lg transition-all focus:animate-ping  gap-x-2">
                     {dict.phonetics.map((x, index) => {
                       return (
                         <button
                           key={`phonetics-${index}`}
-                          className={`${(x.audio.length > 0) ? '' : 'opacity-75 pointer-events-none disabled:pointer-events-none'}`}
+                          className={`${(x.audio.length > 0) ? 'opacity-100' : 'opacity-[65%] pointer-events-none disabled:pointer-events-none'}`}
                           onClick={() => {
                             setSoundUrl(x.audio);
                             if (refPlayIcon.current !== null) {
                               // refPlayIcon.current.click();
-                              refPlayIcon.current.focus();
+                              refPlayIcon.current.style.outline = '1px solid purple';
+                              setTimeout(() => {
+                                if (refPlayIcon.current !== null) {
+                                  refPlayIcon.current.style.outline = '0px solid transparent';
+                                }
+                              }, 400);
                             }
                           }
 
@@ -213,19 +218,26 @@ export const Results = (props: {
                 )}
               </div>
             </div>
-            <button ref={refPlayIcon} onClick={(e) => {
+            <button ref={refPlayIcon} 
+            className="rounded-full transition-all stroke-purple-400"
+            onClick={(e) => {
               e.preventDefault();
               if (soundUrl !== defaultSound) {
                 playWord();
               } else {
                 if (refPhonetics.current !== null) {
-                  refPhonetics.current.focus();
+                  refPhonetics.current.style.outline = '1px solid purple';
+                  setTimeout(() => {
+                    if (refPhonetics.current !== null) {
+                      refPhonetics.current.style.outline = '0px solid purple';
+                    }
+                  }, 400);
                 } else {
                   console.error("Something went wrong while getting word audio url");
                   // alert("Oops");
                 }
               }
-            }} className="focus:animate-bounce hover:animate-none stroke-purple-400">
+            }}>
               <PlayIcon />
             </button>
           </div>
