@@ -1,34 +1,23 @@
-import Head from "next/head";
-import Image from "next/image";
 import {
   Dispatch,
   FormEvent,
-  Fragment,
   SetStateAction,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import axios from "axios";
-import { Inter } from "next/font/google";
 import { IBM_Plex_Serif } from "next/font/google";
 import useSWR, { Fetcher } from "swr";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+
 import { Dictionary } from "@/utils/sample-dict";
 import { SkeletonLayout } from "@/components/skeleton";
 import { MyTabs } from "@/components/mytabs";
-import { ThemeToggler } from "@/components/theme-toggler";
 import Layout from "@/components/layout";
 import useSound from "use-sound";
-const inter = Inter({ subsets: ["latin"] });
+import { LinkIcon, PlayIcon, SearchIcon } from "@/components/icons";
+
 const ibm = IBM_Plex_Serif({ weight: "400", subsets: ["latin"] });
+
 const URL = " https://api.dictionaryapi.dev/api/v2/entries/en";
 
 const fetcher: Fetcher<any, string> = (id) => getDictByKeyword(id);
@@ -38,40 +27,6 @@ async function getDictByKeyword(keyword: string) {
   const res = await fetch(url);
   return await res.json();
 }
-
-export const SearchBar = (props: {
-  setSearch: Dispatch<SetStateAction<string>>;
-  search: string;
-  useSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
-}) => {
-  return (
-    <>
-      <section className="my-8">
-        <form onSubmit={props.useSubmit}>
-          <div className="relative grid w-full">
-            <input
-              onChange={(event) => props.setSearch(event.currentTarget.value)}
-              type={"text"}
-              // pattern={`/^[A-Za-z]+$/i`}
-              // pattern={`\d`}
-              minLength={1}
-              maxLength={20}
-              required
-              className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-purple-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-200/40 dark:focus:ring-violet-700`}
-              placeholder={"keyboard"}
-            />
-            <button>
-              <SearchIcon
-                className={`absolute right-3 top-0.5 scale-[80%] text-purple-400`}
-              />
-            </button>
-          </div>
-        </form>
-        <sub className="debug hidden">Searching for {props.search}</sub>
-      </section>
-    </>
-  );
-};
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
@@ -134,32 +89,44 @@ export default function HomePage() {
   );
 }
 
-function PlayIcon() {
+export const SearchBar = (props: {
+  setSearch: Dispatch<SetStateAction<string>>;
+  search: string;
+  useSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+}) => {
   return (
     <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="h-full w-12 fill-purple-100"
-      >
-        <path
-          fillRule="evenodd"
-          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z"
-          clipRule="evenodd"
-          className="fill-purple-400"
-        />
-      </svg>
+      <section className="my-8">
+        <form onSubmit={props.useSubmit}>
+          <div className="relative grid w-full">
+            <input
+              onChange={(event) => props.setSearch(event.currentTarget.value)}
+              type={"text"}
+              minLength={1}
+              maxLength={20}
+              required
+              className={`prose-sm w-full rounded-lg px-2 py-1 outline outline-purple-100 ring-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:outline-purple-200/40 dark:focus:ring-violet-700`}
+              placeholder={"keyboard"}
+            />
+            <button>
+              <SearchIcon
+                className={`absolute right-3 top-0.5 scale-[80%] text-purple-400`}
+              />
+            </button>
+          </div>
+        </form>
+        <sub className="debug hidden">Searching for {props.search}</sub>
+      </section>
     </>
   );
-}
+};
 
 export const Results = (props: {
   results: Dictionary | null;
   keyword: string;
 }) => {
-  const defaultSound = '/sounds/click-down.mp3';
-  const [soundUrl, setSoundUrl] = useState('/sounds/click-down.mp3');
+  const defaultSound = "/sounds/click-down.mp3";
+  const [soundUrl, setSoundUrl] = useState("/sounds/click-down.mp3");
   const [playWord] = useSound(soundUrl, { volume: 0.25 });
   const refPlayIcon = useRef<HTMLButtonElement | null>(null);
   const refPhonetics = useRef<HTMLDivElement | null>(null);
@@ -186,35 +153,41 @@ export const Results = (props: {
                 {dict ? (
                   <div
                     ref={refPhonetics}
-                    className="inline-flex relative rounded-lg transition-all focus:animate-ping  gap-x-2">
+                    className="relative inline-flex gap-x-2 rounded-lg transition-all  focus:animate-ping"
+                  >
                     {dict.phonetics.map((x, index) => {
                       return (
                         <button
                           key={`phonetics-${index}`}
-                          className={`${(x.audio.length > 0) ? 'opacity-100' : 'opacity-[65%] pointer-events-none disabled:pointer-events-none'}`}
+                          className={`${
+                            x.audio.length > 0
+                              ? "opacity-100"
+                              : "pointer-events-none opacity-[65%] disabled:pointer-events-none"
+                          }`}
                           onClick={() => {
                             setSoundUrl(x.audio);
                             if (refPlayIcon.current !== null) {
-                              refPlayIcon.current.style.outline = '2px solid purple';
+                              refPlayIcon.current.style.outline =
+                                "2px solid purple";
                               setTimeout(() => {
                                 if (refPlayIcon.current !== null) {
-                                  refPlayIcon.current.style.outline = '0px solid transparent';
+                                  refPlayIcon.current.style.outline =
+                                    "0px solid transparent";
                                 }
                               }, 1000);
                             }
-                          }
-
-                          }
+                          }}
                         >
                           <a
                             href={x.audio}
                             onClick={(e) => e.preventDefault()}
                             className="prose-sm no-underline dark:text-violet-400"
-                          > w
-                            {x.text}
+                          >
+                            {" "}
+                            w{x.text}
                           </a>
                         </button>
-                      )
+                      );
                     })}{" "}
                   </div>
                 ) : (
@@ -222,26 +195,30 @@ export const Results = (props: {
                 )}
               </div>
             </div>
-            <button ref={refPlayIcon}
-              className="rounded-full transition-all stroke-purple-400"
+            <button
+              ref={refPlayIcon}
+              className="rounded-full stroke-purple-400 transition-all"
               onClick={(e) => {
                 e.preventDefault();
                 if (soundUrl !== defaultSound) {
                   playWord();
                 } else {
                   if (refPhonetics.current !== null) {
-                    refPhonetics.current.style.outline = '2px solid purple';
+                    refPhonetics.current.style.outline = "2px solid purple";
                     setTimeout(() => {
                       if (refPhonetics.current !== null) {
-                        refPhonetics.current.style.outline = '0px solid purple';
+                        refPhonetics.current.style.outline = "0px solid purple";
                       }
                     }, 1000);
                   } else {
-                    console.error("Something went wrong while getting word audio url");
+                    console.error(
+                      "Something went wrong while getting word audio url"
+                    );
                     // alert("Oops");
                   }
                 }
-              }}>
+              }}
+            >
               <PlayIcon />
             </button>
           </div>
@@ -272,26 +249,32 @@ export const Results = (props: {
                         <p className="my-0 py-0">{y.definition}</p>
 
                         <div className="">
-                          {y.synonyms.length > 0 ? y.synonyms.map((z, idx) => (
-                            <div key={`synonym-definition-${y}-${idx}`}>
-                              {z}{" "}
-                            </div>
-                          ))
-                            : <span className="sr-only">None</span>
-                          }
+                          {y.synonyms.length > 0 ? (
+                            y.synonyms.map((z, idx) => (
+                              <div key={`synonym-definition-${y}-${idx}`}>
+                                {z}{" "}
+                              </div>
+                            ))
+                          ) : (
+                            <span className="sr-only">None</span>
+                          )}
                         </div>
 
                         <div className="">
-                          {y.antonyms.length > 0 ? y.antonyms.map((z, idx) => (
-                            <div key={`antonyms-definition-${y}-${idx}`}>
-                              {z}
-                            </div>
-                          ))
-                            : <span className="sr-only">None</span>
-                          }
+                          {y.antonyms.length > 0 ? (
+                            y.antonyms.map((z, idx) => (
+                              <div key={`antonyms-definition-${y}-${idx}`}>
+                                {z}
+                              </div>
+                            ))
+                          ) : (
+                            <span className="sr-only">None</span>
+                          )}
                         </div>
 
-                        <blockquote className="opacity-70">{y.example}</blockquote>
+                        <blockquote className="opacity-70">
+                          {y.example}
+                        </blockquote>
                       </li>
                     ))}
                   </ul>
@@ -306,15 +289,18 @@ export const Results = (props: {
                         <ul className="prose-sm flex list-none flex-wrap items-center gap-2">
                           {meaning.synonyms.map((synonym, idx) => (
                             <div key={`synonym-${synonym}-${idx}`}>
-                              <a href={`https://google.com/search?q=${synonym}`}>
+                              <a
+                                href={`https://google.com/search?q=${synonym}`}
+                              >
                                 {synonym}
                               </a>
                             </div>
-                          ))
-                          }
+                          ))}
                         </ul>
                       </>
-                    ) : <span className="sr-only">None</span>}
+                    ) : (
+                      <span className="sr-only">None</span>
+                    )}
                   </div>
 
                   <div
@@ -333,14 +319,18 @@ export const Results = (props: {
                         <ul className="prose-sm flex list-none flex-wrap items-center gap-2">
                           {meaning.antonyms.map((antonym, idx) => (
                             <div key={`${idx}-synonym-${antonym}-${idx}`}>
-                              <a href={`https://google.com/search?q=${antonym}`}>
+                              <a
+                                href={`https://google.com/search?q=${antonym}`}
+                              >
                                 {antonym}
                               </a>
                             </div>
                           ))}
                         </ul>
                       </>
-                    ) : <span className="sr-only">None</span>}
+                    ) : (
+                      <span className="sr-only">None</span>
+                    )}
                   </div>
                 </div>
               ))
@@ -382,96 +372,4 @@ export const Results = (props: {
       </div>
     );
   }
-};
-
-export function SearchIcon({ className }: { className: string }): JSX.Element {
-  return (
-    <div className={className}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="h-6 w-6"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </div>
-  );
-}
-
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  // { name: "Team", href: "#", current: false },
-  { name: "Words", href: "/words", current: false },
-  // { name: "Calendar", href: "#", current: false },
-];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const LinkIcon = () => {
-  return (
-    <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="h-6 w-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-        />
-      </svg>
-    </>
-  );
-};
-
-const MoonIcon = () => {
-  return (
-    <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="h-6 w-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
-        />
-      </svg>
-    </>
-  );
-};
-const SunIcon = () => {
-  return (
-    <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="h-6 w-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-        />
-      </svg>
-    </>
-  );
 };
